@@ -42,9 +42,9 @@ try:
     df_sorted = df.sort_values(by="number_of_files", ascending=True)
 
     # Select and rename columns for display
-    preview_df = df_sorted[["collection", "bilid", "number_of_files", "pretty_size"]].rename(columns={
+    preview_df = df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
         "collection": "Collection",
-        "bilid": "DID",
+        "bildid": "DID",
         "number_of_files": "Number of Files",
         "pretty_size": "Size"
     })
