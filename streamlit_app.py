@@ -43,7 +43,7 @@ try:
 
     # Display table preview
     st.subheader("Preview: Sorted by Number of Files (Ascending)")
-    st.dataframe(df_sorted[["collection", "dataset_id", "number_of_files", "pretty_size"]].head(20))
+    st.dataframe(df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].head(20))
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
