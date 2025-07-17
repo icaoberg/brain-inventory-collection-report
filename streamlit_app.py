@@ -4,6 +4,7 @@ import requests
 import re
 from datetime import datetime
 import humanize
+import matplotlib.pyplot as plt
 
 # App Title
 st.title("🧠 Brain Image Library Inventory Report")
@@ -38,20 +39,32 @@ try:
     # Compute pretty_size from size
     df["pretty_size"] = df["size"].apply(lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None)
 
-    # Sort by number_of_files in ascending order
-    df_sorted = df.sort_values(by="number_of_files", ascending=True)
+    # Sort by number_of_files in descending order
+    df_sorted = df.sort_values(by="number_of_files", ascending=False)
 
     # Select and rename columns for display
     preview_df = df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
         "collection": "Collection",
-        "bildid": "DID",
+        "bildid": "Brain ID",
         "number_of_files": "Number of Files",
         "pretty_size": "Size"
     })
 
     # Display table preview without index
-    st.subheader("Preview: Sorted by Number of Files (Ascending)")
+    st.subheader("Preview: Sorted by Number of Files (Descending)")
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
+
+    # Plot histogram of collection counts
+    st.subheader("📊 Dataset Count per Collection")
+    collection_counts = df["collection"].value_counts().sort_index()
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    collection_counts.plot(kind="bar", ax=ax)
+    ax.set_title("Number of Datasets per Collection")
+    ax.set_xlabel("Collection")
+    ax.set_ylabel("Dataset Count")
+    ax.grid(axis="y", linestyle="--", alpha=0.7)
+    st.pyplot(fig)
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
