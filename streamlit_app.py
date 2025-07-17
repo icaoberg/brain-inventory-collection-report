@@ -6,7 +6,7 @@ from datetime import datetime
 import humanize
 
 # App Title
-st.title("🧠 Brain Image Library Collection Report")
+st.title("🧠 Brain Image Library Inventory Report")
 
 # Introduction
 st.markdown("""
@@ -39,11 +39,19 @@ try:
     df["pretty_size"] = df["size"].apply(lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None)
 
     # Sort by number_of_files in ascending order
-    df_sorted = df.sort_values(by="number_of_files", ascending=False)
+    df_sorted = df.sort_values(by="number_of_files", ascending=True)
 
-    # Display table preview
-    st.subheader("Preview: Sorted by Number of Files")
-    st.dataframe(df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].head(20))
+    # Select and rename columns for display
+    preview_df = df_sorted[["collection", "dataset_id", "number_of_files", "pretty_size"]].rename(columns={
+        "collection": "Collection",
+        "dataset_id": "DID",
+        "number_of_files": "Number of Files",
+        "pretty_size": "Size"
+    })
+
+    # Display table preview without index
+    st.subheader("Preview: Sorted by Number of Files (Ascending)")
+    st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
