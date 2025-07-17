@@ -39,10 +39,10 @@ try:
     df["pretty_size"] = df["size"].apply(lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None)
 
     # Sort by number_of_files in ascending order
-    df_sorted = df.sort_values(by="number_of_files", ascending=True)
+    df_sorted = df.sort_values(by="number_of_files", ascending=False)
 
     # Display table preview
-    st.subheader("Preview: Sorted by Number of Files (Ascending)")
+    st.subheader("Preview: Sorted by Number of Files")
     st.dataframe(df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].head(20))
 
 except Exception as e:
