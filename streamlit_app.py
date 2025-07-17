@@ -3,9 +3,10 @@ import pandas as pd
 import requests
 import re
 from datetime import datetime
+import humanize
 
 # App Title
-st.title("🧠 Brain Image Library Inventory Report")
+st.title("🧠 Brain Image Library Collection Report")
 
 # Introduction
 st.markdown("""
@@ -26,7 +27,7 @@ try:
     response.raise_for_status()
     data = response.json()
     df = pd.DataFrame(data)
-    
+
     # Extract collection from bildirectory
     def extract_collection(path):
         match = re.search(r"/bil/data/([a-f0-9]{2})/", path)
@@ -34,12 +35,15 @@ try:
 
     df["collection"] = df["bildirectory"].apply(extract_collection)
 
+    # Compute pretty_size from size
+    df["pretty_size"] = df["size"].apply(lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None)
+
     # Sort by number_of_files in ascending order
     df_sorted = df.sort_values(by="number_of_files", ascending=True)
 
     # Display table preview
     st.subheader("Preview: Sorted by Number of Files (Ascending)")
-    st.dataframe(df_sorted[["bildirectory", "collection", "number_of_files"]].head(20))
+    st.dataframe(df_sorted[["collection", "dataset_id", "number_of_files", "pretty_size"]].head(20))
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
