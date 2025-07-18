@@ -95,6 +95,27 @@ try:
     else:
         st.info("No affiliation information is present for the selected collection.")
 
+    st.subheader("🧑‍🔬 Dataset Distribution by Contributor (Selected Collection)")
+
+    if (
+        "contributor" in collection_subset.columns
+        and collection_subset["contributor"].notna().sum() > 0
+    ):
+        contributor_counts_global = (
+            collection_subset["contributor"].dropna().value_counts()
+        )
+        fig_contrib_global, ax_contrib_global = plt.subplots(figsize=(6, 6))
+        wedges, texts = ax_contrib_global.pie(
+            contributor_counts_global,
+            labels=contributor_counts_global.index,
+            startangle=140,
+        )
+        ax_contrib_global.axis("equal")
+        ax_contrib_global.set_title("Contributor")
+        st.pyplot(fig_contrib_global)
+    else:
+        st.info("No contributor information is present for the selected collection.")
+
     # Pie chart for number_of_files per dataset
     st.subheader("📈 File Distribution in Selected Collection")
     pie_data = df[df["collection"] == selected_collection].set_index("bildid")[
