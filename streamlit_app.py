@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import requests
@@ -61,18 +62,13 @@ try:
     })
     st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
-    # Pie chart for number_of_files per dataset
+    # Pie chart: number_of_files per dataset
     st.subheader("📈 File Distribution in Selected Collection")
     pie_data = df[df["collection"] == selected_collection].set_index("bildid")["number_of_files"]
     pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
 
     fig3, ax3 = plt.subplots(figsize=(6, 6))
-    wedges, _, _ = ax3.pie(
-        pie_data,
-        labels=None,
-        autopct="%1.1f%%",
-        startangle=140
-    )
+    wedges, _, _ = ax3.pie(pie_data, labels=None, autopct="%1.1f%%", startangle=140)
     ax3.axis("equal")
     ax3.set_title("Number of Files per Dataset")
     labels = list(pie_data.index)
@@ -80,7 +76,7 @@ try:
     ax3.legend(wedges, labels, title="Brain ID", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small", ncol=num_cols)
     st.pyplot(fig3)
 
-    # Histogram: Dataset Count per Collection
+    # Histogram 1: Dataset Count per Collection
     st.subheader("📊 Dataset Count per Collection")
     collection_counts = df["collection"].value_counts().sort_index()
     top5_datasets = collection_counts.nlargest(5).index.tolist()
@@ -99,7 +95,7 @@ try:
     ax1.grid(axis="y", linestyle="--", alpha=0.7)
     st.pyplot(fig1)
 
-    # Histogram: Total Number of Files per Collection
+    # Histogram 2: Total Number of Files per Collection
     st.subheader("📦 Total Number of Files per Collection")
     collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
     top5_files = collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
@@ -123,12 +119,7 @@ try:
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
         filetype_counts = df["file_types"].dropna().value_counts()
         fig4, ax4 = plt.subplots(figsize=(6, 6))
-        wedges, _, _ = ax4.pie(
-            filetype_counts,
-            labels=None,
-            autopct="%1.1f%%",
-            startangle=140
-        )
+        wedges, _, _ = ax4.pie(filetype_counts, labels=None, autopct="%1.1f%%", startangle=140)
         ax4.axis("equal")
         ax4.set_title("File Type Breakdown")
         ax4.legend(wedges, filetype_counts.index, title="File Types", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
@@ -141,12 +132,7 @@ try:
     if "mime_types" in df.columns and df["mime_types"].notna().sum() > 0:
         mime_counts = df["mime_types"].dropna().value_counts()
         fig5, ax5 = plt.subplots(figsize=(6, 6))
-        wedges, _, _ = ax5.pie(
-            mime_counts,
-            labels=None,
-            autopct="%1.1f%%",
-            startangle=140
-        )
+        wedges, _, _ = ax5.pie(mime_counts, labels=None, autopct="%1.1f%%", startangle=140)
         ax5.axis("equal")
         ax5.set_title("MIME Type Breakdown")
         ax5.legend(wedges, mime_counts.index, title="MIME Types", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
@@ -154,5 +140,44 @@ try:
     else:
         st.info("No MIME-type information is present.")
 
+    # Frequencies Pie Chart
+    st.subheader("📁 File Extension Frequencies")
+    if "frequencies" in df.columns and df["frequencies"].notna().sum() > 0:
+        all_freqs = df["frequencies"].dropna().tolist()
+        freq_total = {}
+        for freq_dict in all_freqs:
+            if isinstance(freq_dict, dict):
+                for ext, count in freq_dict.items():
+                    freq_total[ext] = freq_total.get(ext, 0) + count
+        if freq_total:
+            freq_series = pd.Series(freq_total).sort_values(ascending=False)
+            fig6, ax6 = plt.subplots(figsize=(6, 6))
+            wedges, _, _ = ax6.pie(freq_series, labels=None, autopct="%1.1f%%", startangle=140)
+            ax6.axis("equal")
+            ax6.set_title("File Extension Frequency Distribution")
+            ax6.legend(wedges, freq_series.index, title="Extensions", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+            st.pyplot(fig6)
+        else:
+            st.info("No valid frequency data found.")
+    else:
+        st.info("No file extension frequency information is present.")
+
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
+
+    # ─────────────────────────────────────────────
+    # Statistics for Selected Collection
+    # ─────────────────────────────────────────────
+    st.subheader("📊 Collection Statistics")
+
+    # Number of datasets (rows) in the selected collection
+    num_datasets = filtered_df.shape[0]
+    st.markdown(f"**Number of Datasets:** {num_datasets}")
+
+    # Metadata version frequencies
+    if "metadata" in df.columns:
+        meta_counts = df[df["collection"] == selected_collection]["metadata"].value_counts().to_dict()
+        st.markdown("**Metadata Version Frequency:**")
+        st.json(meta_counts)
+    else:
+        st.info("No metadata information is present.")
