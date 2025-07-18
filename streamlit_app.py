@@ -76,44 +76,36 @@ try:
     ax3.legend(wedges, labels, title="Brain ID", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small", ncol=num_cols)
     st.pyplot(fig3)
 
-    # Histogram 1: Dataset Count per Collection
-    st.subheader("📊 Dataset Count per Collection")
-    collection_counts = df["collection"].value_counts().sort_index()
-    top5_datasets = collection_counts.nlargest(5).index.tolist()
-    fig1, ax1 = plt.subplots(figsize=(10, 5))
-    bars1 = collection_counts.plot(kind="bar", ax=ax1, color="skyblue")
-    for i, label in enumerate(collection_counts.index):
-        if label in top5_datasets:
-            bars1.patches[i].set_color("steelblue")
-            bars1.patches[i].set_label("Other" if label.lower() == "count" else label)
-    ax1.legend(title="Top 5 Collections")
-    ax1.set_title("Number of Datasets per Collection")
-    ax1.set_xlabel("")
-    ax1.set_ylabel("Dataset Count")
-    ax1.set_xticklabels([])
-    ax1.tick_params(axis="x", bottom=False)
-    ax1.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig1)
 
-    # Histogram 2: Total Number of Files per Collection
-    st.subheader("📦 Total Number of Files per Collection")
-    collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
-    top5_files = collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
-    bars2 = collection_file_counts.plot(kind="bar", ax=ax2, color="lightcoral")
-    for i, label in enumerate(collection_file_counts.index):
-        if label in top5_files:
-            bars2.patches[i].set_color("indianred")
-            bars2.patches[i].set_label("Other" if label.lower() == "number_of_files" else label)
-    ax2.legend(title="Top 5 Collections")
-    ax2.set_title("Total Number of Files per Collection")
-    ax2.set_xlabel("")
-    ax2.set_ylabel("File Count")
-    ax2.set_xticklabels([])
-    ax2.tick_params(axis="x", bottom=False)
-    ax2.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig2)
+    # ─────────────────────────────────────────────
+    # Affiliation Pie Chart
+    # ─────────────────────────────────────────────
+    st.subheader("🏛️ Dataset Distribution by Affiliation")
+    if "affiliation" in df.columns and df["affiliation"].notna().sum() > 0:
+        affiliation_counts = df["affiliation"].dropna().value_counts()
+        fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
+        wedges, _, _ = ax_aff.pie(affiliation_counts, labels=None, autopct="%1.1f%%", startangle=140)
+        ax_aff.axis("equal")
+        ax_aff.set_title("Dataset Count by Affiliation")
+        ax_aff.legend(wedges, affiliation_counts.index, title="Affiliations", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+        st.pyplot(fig_aff)
+    else:
+        st.info("No affiliation information is present.")
 
+    # ─────────────────────────────────────────────
+    # General Modality Pie Chart
+    # ─────────────────────────────────────────────
+    st.subheader("🧪 Dataset Distribution by General Modality")
+    if "general_modality" in df.columns and df["general_modality"].notna().sum() > 0:
+        modality_counts = df["general_modality"].dropna().value_counts()
+        fig_mod, ax_mod = plt.subplots(figsize=(6, 6))
+        wedges, _, _ = ax_mod.pie(modality_counts, labels=None, autopct="%1.1f%%", startangle=140)
+        ax_mod.axis("equal")
+        ax_mod.set_title("Dataset Count by General Modality")
+        ax_mod.legend(wedges, modality_counts.index, title="General Modality", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+        st.pyplot(fig_mod)
+    else:
+        st.info("No general modality information is present.")
     # File Types Pie Chart
     st.subheader("🗂️ File Types Distribution")
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
