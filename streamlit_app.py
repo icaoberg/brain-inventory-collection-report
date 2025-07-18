@@ -50,7 +50,7 @@ try:
     # Collections
     st.subheader("📁 Collections")
     unique_collections = sorted(df["collection"].dropna().unique())
-    selected_collection = st.selectbox("Select a Collection:", unique_collections)
+    selected_collection = st.selectbox("Select a Collection:", unique_collections, index=unique_collections.index("26") if "26" in unique_collections else 0)
     st.markdown(f"You selected: **{selected_collection}**")
 
     filtered_df = df[df["collection"] == selected_collection][["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
@@ -82,26 +82,29 @@ try:
 
     # Histogram: Dataset Count per Collection
     st.subheader("🏛️ Dataset Distribution by Affiliation")
-    if "affiliation" in df.columns and df["affiliation"].notna().sum() > 0:
-        affiliation_counts = df["affiliation"].dropna().value_counts()
+    collection_subset = df[df["collection"] == selected_collection]
+    if "affiliation" in collection_subset.columns and collection_subset["affiliation"].notna().sum() > 0:
+    if "affiliation" in collection_subset.columns and collection_subset["affiliation"].notna().sum() > 0:
         fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
         wedges, texts, _ = ax_aff.pie(affiliation_counts, labels=affiliation_counts.index, startangle=140)
         ax_aff.axis("equal")
         ax_aff.set_title("Affiliation")
         st.pyplot(fig_aff)
     else:
-        st.info("No affiliation information is present.")
+    else:
+        st.info("No affiliation information is present for the selected collection.")
 
     st.subheader("🧑‍🔬 Dataset Distribution by Contributor")
-    if "contributor" in df.columns and df["contributor"].notna().sum() > 0:
-        contributor_counts = df["contributor"].dropna().value_counts()
+    if "contributor" in collection_subset.columns and collection_subset["contributor"].notna().sum() > 0:
+    if "contributor" in collection_subset.columns and collection_subset["contributor"].notna().sum() > 0:
         fig_contrib, ax_contrib = plt.subplots(figsize=(6, 6))
         wedges, texts, _ = ax_contrib.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
         ax_contrib.axis("equal")
         ax_contrib.set_title("Contributor")
         st.pyplot(fig_contrib)
     else:
-        st.info("No contributor information is present.")
+    else:
+        st.info("No contributor information is present for the selected collection.")
 
     st.subheader("📦 Total Number of Files per Collection")
     collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
