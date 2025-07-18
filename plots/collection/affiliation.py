@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 
 def plot(df, selected_collection):
-    st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
+    st.subheader("🏛️ Dataset Distribution by Affiliation")
     collection_subset = df[df["collection"] == selected_collection]
     
     if "affiliation" in collection_subset.columns and collection_subset["affiliation"].notna().sum() > 0:
