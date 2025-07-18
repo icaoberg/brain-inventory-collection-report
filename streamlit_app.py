@@ -76,47 +76,38 @@ try:
     ax3.legend(wedges, labels, title="Brain ID", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small", ncol=num_cols)
     st.pyplot(fig3)
 
-    # Affiliation and Contributor Pie Charts (Selected Collection)
-    # Affiliation and Contributor Pie Charts (Selected Collection)
-    st.subheader("🏛️ Dataset Distribution by Affiliation")
+
+    # ─────────────────────────────────────────────
+    # Affiliation Pie Chart
+    st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
     affiliation_subset = df[df["collection"] == selected_collection]
     if "affiliation" in affiliation_subset.columns and affiliation_subset["affiliation"].notna().sum() > 0:
         affiliation_counts = affiliation_subset["affiliation"].dropna().value_counts()
-        contributor_counts = affiliation_subset["contributor"].dropna().value_counts()
-        fig_aff1, ax1 = plt.subplots(figsize=(6, 6))
-        wedges1, texts1, _ = ax1.pie(affiliation_counts, labels=affiliation_counts.index, startangle=140)
-        ax1.axis("equal")
-        ax1.set_title("Affiliation")
-        st.pyplot(fig_aff1)
-        fig_aff2, ax2 = plt.subplots(figsize=(6, 6))
-        wedges2, texts2, _ = ax2.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
-        ax2.axis("equal")
-        ax2.set_title("Contributor")
-        st.pyplot(fig_aff2)
-    fig_aff2, ax2 = plt.subplots(figsize=(6, 6))
-    wedges2, texts2, _ = ax2.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
-    ax2.axis("equal")
-    ax2.set_title("Contributor")
-    st.pyplot(fig_aff2)
-else:
-    st.info("No affiliation or contributor information is present for the selected collection.")
+        fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
+        wedges, _, _ = ax_aff.pie(affiliation_counts, labels=None, autopct="%1.1f%%", startangle=140)
+        ax_aff.axis("equal")
+        ax_aff.set_title("Affiliation Breakdown (Selected Collection)")
+        ax_aff.legend(wedges, affiliation_counts.index, title="Affiliations", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+        st.pyplot(fig_aff)
+    else:
+        st.info("No affiliation information is present for the selected collection.")
+    else:
+        st.info("No affiliation information is present.")
 
     # ─────────────────────────────────────────────
     # General Modality Pie Chart
     # ─────────────────────────────────────────────
     st.subheader("🧪 Dataset Distribution by General Modality")
-    if "general_modality" in df.columns and df["generalmodality"].notna().sum() > 0:
-        modality_counts = df["generalmodality"].dropna().value_counts()
+    if "general_modality" in df.columns and df["general_modality"].notna().sum() > 0:
+        modality_counts = df["general_modality"].dropna().value_counts()
         fig_mod, ax_mod = plt.subplots(figsize=(6, 6))
         wedges, _, _ = ax_mod.pie(modality_counts, labels=None, autopct="%1.1f%%", startangle=140)
         ax_mod.axis("equal")
-        ax_mod.set_title("Dataset Count by Modality")
-        ax_mod.legend(wedges, modality_counts.index, title="Modality", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+        ax_mod.set_title("Dataset Count by General Modality")
+        ax_mod.legend(wedges, modality_counts.index, title="General Modality", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
         st.pyplot(fig_mod)
     else:
         st.info("No general modality information is present.")
-    
-    
     # File Types Pie Chart
     st.subheader("🗂️ File Types Distribution")
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
