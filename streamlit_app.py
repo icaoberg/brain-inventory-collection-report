@@ -76,24 +76,31 @@ try:
     ax3.legend(wedges, labels, title="Brain ID", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small", ncol=num_cols)
     st.pyplot(fig3)
 
-
-    # ─────────────────────────────────────────────
-
-    # ─────────────────────────────────────────────
     # Affiliation and Contributor Pie Charts (Selected Collection)
+    # Affiliation and Contributor Pie Charts (Selected Collection)
+    st.subheader("🏛️ Dataset Distribution by Affiliation")
+    affiliation_subset = df[df["collection"] == selected_collection]
+    if "affiliation" in affiliation_subset.columns and affiliation_subset["affiliation"].notna().sum() > 0:
+        affiliation_counts = affiliation_subset["affiliation"].dropna().value_counts()
+        contributor_counts = affiliation_subset["contributor"].dropna().value_counts()
         fig_aff1, ax1 = plt.subplots(figsize=(6, 6))
         wedges1, texts1, _ = ax1.pie(affiliation_counts, labels=affiliation_counts.index, startangle=140)
         ax1.axis("equal")
         ax1.set_title("Affiliation")
         st.pyplot(fig_aff1)
-
         fig_aff2, ax2 = plt.subplots(figsize=(6, 6))
         wedges2, texts2, _ = ax2.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
         ax2.axis("equal")
         ax2.set_title("Contributor")
         st.pyplot(fig_aff2)
-    else:
-        st.info("No affiliation or contributor information is present for the selected collection.")
+    fig_aff2, ax2 = plt.subplots(figsize=(6, 6))
+    wedges2, texts2, _ = ax2.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
+    ax2.axis("equal")
+    ax2.set_title("Contributor")
+    st.pyplot(fig_aff2)
+else:
+    st.info("No affiliation or contributor information is present for the selected collection.")
+
     # ─────────────────────────────────────────────
     # General Modality Pie Chart
     # ─────────────────────────────────────────────
