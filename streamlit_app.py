@@ -79,16 +79,18 @@ try:
 
     # ─────────────────────────────────────────────
     # Affiliation Pie Chart
-    # ─────────────────────────────────────────────
-    st.subheader("🏛️ Dataset Distribution by Affiliation")
-    if "affiliation" in df.columns and df["affiliation"].notna().sum() > 0:
-        affiliation_counts = df["affiliation"].dropna().value_counts()
+    st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
+    affiliation_subset = df[df["collection"] == selected_collection]
+    if "affiliation" in affiliation_subset.columns and affiliation_subset["affiliation"].notna().sum() > 0:
+        affiliation_counts = affiliation_subset["affiliation"].dropna().value_counts()
         fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
         wedges, _, _ = ax_aff.pie(affiliation_counts, labels=None, autopct="%1.1f%%", startangle=140)
         ax_aff.axis("equal")
-        ax_aff.set_title("Dataset Count by Affiliation")
+        ax_aff.set_title("Affiliation Breakdown (Selected Collection)")
         ax_aff.legend(wedges, affiliation_counts.index, title="Affiliations", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
         st.pyplot(fig_aff)
+    else:
+        st.info("No affiliation information is present for the selected collection.")
     else:
         st.info("No affiliation information is present.")
 
