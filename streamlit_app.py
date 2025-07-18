@@ -4,69 +4,42 @@ import requests
 import re
 from datetime import datetime
 import humanize
-import matplotlib.pyplot as plt
-import plotly.express as px
+
+# Import modular plotting functions
+from plots.collection.affiliation import plot as affiliation_plot
+from plots.download_get_data import load_data
+from plots.intro import print_intro
+
+from plots.contributor import plot_contributor_pie as load_data
+from plots.file_distribution import plot_file_distribution_bar
+from plots.mime_type import plot_mime_pie
+
+# Load and preprocess data (simplified for demo)
+# ...
+
+# Dropdown
+selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
+
+# Call plotting functions
+
+plot_contributor_pie(df, selected_collection)
+plot_file_distribution_bar(df, selected_collection)
+plot_mime_pie(df)
+
 
 # ────────────────────────────────
 # App Title and Introduction
 # ────────────────────────────────
-
-st.title("🧠 Brain Image Library Inventory Report")
-
-st.markdown(
-    """
-The **Brain Image Library (BIL)** is a national public resource that supports the storage, sharing, and analysis of large-scale brain imaging datasets. 
-This report provides a snapshot of the current dataset inventory, highlighting key metadata including file counts, sizes, and organizational structure.
-"""
-)
-
-# Display today's date
-today_str = datetime.today().strftime("%B %d, %Y")
-st.markdown(f"### 📅 Report Date: {today_str}")
-
-# ────────────────────────────────
-# Load and Parse JSON Data
-# ────────────────────────────────
-
-URL = "https://download.brainimagelibrary.org//inventory/daily/reports/today.json"
-st.caption(f"Loading data from: {URL}")
+print_intro()
 
 try:
-    # Request and load JSON into DataFrame
-    response = requests.get(URL)
-    response.raise_for_status()
-    data = response.json()
-    df = pd.DataFrame(data)
+    # ────────────────────────────────
+    # Load and Parse JSON Data
+    # ────────────────────────────────
+    df = load_data()
 
-    # Extract 2-character collection code from bildirectory
-    def extract_collection(path):
-        match = re.search(r"/bil/data/([a-f0-9]{2})/", path)
-        return match.group(1) if match else None
-
-    df["collection"] = df["bildirectory"].apply(extract_collection)
-
-    # Convert raw size to human-readable format
-    df["pretty_size"] = df["size"].apply(
-        lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None
-    )
-
-    # Sort for preview table
-    df_sorted = df.sort_values(by="number_of_files", ascending=False)
-
-    # Preview table of key metadata
-    preview_df = df_sorted[
-        ["collection", "bildid", "number_of_files", "pretty_size"]
-    ].rename(
-        columns={
-            "collection": "Collection",
-            "bildid": "Brain ID",
-            "number_of_files": "Number of Files",
-            "pretty_size": "Size",
-        }
-    )
-
-    st.subheader("Preview: Sorted by Number of Files (Descending)")
-    st.dataframe(preview_df, use_container_width=True, hide_index=True)
+    st.subheader("Sorted by Number of Files (Descending)")
+    st.dataframe(df, use_container_width=True, hide_index=True)
 
     # ────────────────────────────────
     # Collection Selection Dropdown
@@ -95,22 +68,7 @@ try:
     # ────────────────────────────────
     # Pie Chart: Dataset by Affiliation
     # ────────────────────────────────
-    st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
-    collection_subset = df[df["collection"] == selected_collection]
-
-    if (
-        "affiliation" in collection_subset.columns
-        and collection_subset["affiliation"].notna().sum() > 0
-    ):
-        affiliation_counts = collection_subset["affiliation"].dropna().value_counts()
-        fig_aff = px.pie(
-            names=affiliation_counts.index,
-            values=affiliation_counts.values,
-            title="Affiliations in Selected Collection",
-        )
-        st.plotly_chart(fig_aff, use_container_width=True)
-    else:
-        st.info("No affiliation information is present for the selected collection.")
+    affiliation_plot(df, selected_collection)
 
     # ────────────────────────────────
     # Bar Chart: Dataset Count by Collection (Labeled by bildid)
