@@ -89,7 +89,7 @@ try:
         fig_aff = px.pie(
             names=affiliation_counts.index,
             values=affiliation_counts.values,
-            title="Affiliation (Interactive)",
+            title="Affiliations",
         )
         st.plotly_chart(fig_aff, use_container_width=True)
     else:
@@ -105,8 +105,10 @@ try:
         fig_contrib = px.pie(
             names=contributor_counts.index,
             values=contributor_counts.values,
-            title="Contributor (Interactive)",
+            title="Contributors",
+            hole=0.3,  # Optional: donut style
         )
+        fig_contrib.update_traces(textinfo="label+percent")
         st.plotly_chart(fig_contrib, use_container_width=True)
     else:
         st.info("No contributor information is present for the selected collection.")
