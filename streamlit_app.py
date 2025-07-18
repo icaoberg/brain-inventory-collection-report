@@ -102,39 +102,27 @@ try:
     st.pyplot(fig3)
 
     st.subheader("🏛️ Dataset Distribution by Affiliation")
-    collection_subset = df[df["collection"] == selected_collection]
+    pie_data = df[df["collection"] == selected_collection].set_index("bildid")[
+        "affiliation"
+    ]
+    pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
 
-    if (
-        "affiliation" in collection_subset.columns
-        and collection_subset["affiliation"].notna().sum() > 0
-    ):
-        affiliation_counts = collection_subset["affiliation"].dropna().value_counts()
-        fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
-        wedges, texts, _ = ax_aff.pie(
-            affiliation_counts, labels=affiliation_counts.index, startangle=140
-        )
-        ax_aff.axis("equal")
-        ax_aff.set_title("Affiliation")
-        st.pyplot(fig_aff)
-    else:
-        st.info("No affiliation information is present for the selected collection.")
-
-    st.subheader("🧑‍🔬 Dataset Distribution by Contributor")
-
-    if (
-        "contributor" in collection_subset.columns
-        and collection_subset["contributor"].notna().sum() > 0
-    ):
-        contributor_counts = collection_subset["contributor"].dropna().value_counts()
-        fig_contrib, ax_contrib = plt.subplots(figsize=(6, 6))
-        wedges, texts, _ = ax_contrib.pie(
-            contributor_counts, labels=contributor_counts.index, startangle=140
-        )
-        ax_contrib.axis("equal")
-        ax_contrib.set_title("Contributor")
-        st.pyplot(fig_contrib)
-    else:
-        st.info("No contributor information is present for the selected collection.")
+    fig3, ax4 = plt.subplots(figsize=(6, 6))
+    wedges, _, _ = ax3.pie(pie_data, labels=None, autopct="%1.1f%%", startangle=140)
+    ax3.axis("equal")
+    ax3.set_title("Affiliation Distribution")
+    labels = list(pie_data.index)
+    num_cols = (len(labels) - 1) // 25 + 1
+    ax3.legend(
+        wedges,
+        labels,
+        title="Affiliation",
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        fontsize="small",
+        ncol=num_cols,
+    )
+    st.pyplot(figs)
 
     st.subheader("📦 Total Number of Files per Collection")
     collection_file_counts = (
