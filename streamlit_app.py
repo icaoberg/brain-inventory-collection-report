@@ -135,24 +135,18 @@ try:
 
     st.subheader("📊 Dataset Count per Collection")
 
-    # Filter and prepare the data
-    bar_df = df[["collection", "bildid"]].copy()
-    bar_df["count"] = 1  # One dataset per row
-
-    # Create bar chart
     fig_bar = px.bar(
         bar_df,
         x="collection",
         y="count",
         hover_data={"bildid": True, "collection": False, "count": False},
         title="Number of Datasets per Collection",
-        labels={"count": "Dataset", "collection": ""},
+        labels={"count": "Dataset", "collection": "Collection"},
     )
 
-    # Hide x-axis tick labels and remove legend
     fig_bar.update_layout(
         showlegend=False,
-        xaxis=dict(showticklabels=False),
+        xaxis=dict(tickangle=45, showticklabels=True),  # Rotate labels  # Now visible
         yaxis=dict(gridcolor="lightgray"),
     )
 
