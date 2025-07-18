@@ -150,4 +150,9 @@ try:
     ax2.set_xlabel("")
     ax2.set_ylabel("File Count")
     ax2.set_xticklabels([])
-    ax2.tick_pa_
+    ax2.tick_params(axis="x", bottom=False)
+    ax2.grid(axis="y", linestyle="--", alpha=0.7)
+    st.pyplot(fig2)
+
+except Exception as e:
+    st.error(f"Failed to load or process data: {e}")
