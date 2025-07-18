@@ -77,4 +77,13 @@ try:
 
     # Final touches
     ax.set_title("Number of Datasets per Collection")
-    ax.set_xlabel("")  # Remove x-axis labe_
+    ax.set_xlabel("")  # Remove x-axis label
+    ax.set_ylabel("Dataset Count")
+    ax.set_xticklabels([])  # Remove all tick labels from x-axis
+    ax.tick_params(axis="x", bottom=False)  # Remove ticks
+    ax.grid(axis="y", linestyle="--", alpha=0.7)
+
+    st.pyplot(fig)
+
+except Exception as e:
+    st.error(f"Failed to load or process data: {e}")
