@@ -54,36 +54,61 @@ try:
     st.subheader("Preview: Sorted by Number of Files (Descending)")
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
-    # Plot histogram of collection counts
+    # ─────────────────────────────────────────────
+    # First Histogram: Count of Datasets per Collection
+    # ─────────────────────────────────────────────
     st.subheader("📊 Dataset Count per Collection")
     collection_counts = df["collection"].value_counts().sort_index()
+    top5_datasets = df["collection"].value_counts().nlargest(5).index.tolist()
 
-    # Identify top 5 collections by dataset count
-    top5 = df["collection"].value_counts().nlargest(5).index.tolist()
+    fig1, ax1 = plt.subplots(figsize=(10, 5))
+    bars1 = collection_counts.plot(kind="bar", ax=ax1, color="skyblue")
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bars = collection_counts.plot(kind="bar", ax=ax, color="skyblue")
-
-    # Customize bar colors and add legend entries (only names, not counts)
     for i, label in enumerate(collection_counts.index):
-        if label in top5:
-            bars.patches[i].set_color("steelblue")
-            bars.patches[i].set_label(label)  # Only label, not count
+        if label in top5_datasets:
+            display_label = "Others" if label.lower() == "other" else label
+            bars1.patches[i].set_color("steelblue")
+            bars1.patches[i].set_label(display_label)
 
-    # Build unique legend for top 5
-    handles, labels = ax.get_legend_handles_labels()
-    by_label = dict(zip(labels, handles))
-    ax.legend(by_label.values(), by_label.keys(), title="Top 5 Collections")
+    handles1, labels1 = ax1.get_legend_handles_labels()
+    by_label1 = dict(zip(labels1, handles1))
+    ax1.legend(by_label1.values(), by_label1.keys(), title="Top 5 Collections")
 
-    # Final touches
-    ax.set_title("Number of Datasets per Collection")
-    ax.set_xlabel("")  # Remove x-axis label
-    ax.set_ylabel("Dataset Count")
-    ax.set_xticklabels([])  # Remove all tick labels from x-axis
-    ax.tick_params(axis="x", bottom=False)  # Remove ticks
-    ax.grid(axis="y", linestyle="--", alpha=0.7)
+    ax1.set_title("Number of Datasets per Collection")
+    ax1.set_xlabel("")
+    ax1.set_ylabel("Dataset Count")
+    ax1.set_xticklabels([])
+    ax1.tick_params(axis="x", bottom=False)
+    ax1.grid(axis="y", linestyle="--", alpha=0.7)
+    st.pyplot(fig1)
 
-    st.pyplot(fig)
+    # ─────────────────────────────────────────────
+    # Second Histogram: Total Number of Files per Collection
+    # ─────────────────────────────────────────────
+    st.subheader("📦 Total Number of Files per Collection")
+    collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
+    top5_files = collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
+
+    fig2, ax2 = plt.subplots(figsize=(10, 5))
+    bars2 = collection_file_counts.plot(kind="bar", ax=ax2, color="lightcoral")
+
+    for i, label in enumerate(collection_file_counts.index):
+        if label in top5_files:
+            display_label = "Others" if label.lower() == "other" else label
+            bars2.patches[i].set_color("indianred")
+            bars2.patches[i].set_label(display_label)
+
+    handles2, labels2 = ax2.get_legend_handles_labels()
+    by_label2 = dict(zip(labels2, handles2))
+    ax2.legend(by_label2.values(), by_label2.keys(), title="Top 5 Collections")
+
+    ax2.set_title("Total Number of Files per Collection")
+    ax2.set_xlabel("")
+    ax2.set_ylabel("File Count")
+    ax2.set_xticklabels([])
+    ax2.tick_params(axis="x", bottom=False)
+    ax2.grid(axis="y", linestyle="--", alpha=0.7)
+    st.pyplot(fig2)
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
