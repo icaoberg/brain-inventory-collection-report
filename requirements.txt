@@ -4,3 +4,4 @@ requests
 humanize
 matplotlib
 numpy
+plotly

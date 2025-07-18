@@ -5,6 +5,7 @@ import re
 from datetime import datetime
 import humanize
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 # App Title
 st.title("🧠 Brain Image Library Inventory Report")
@@ -80,45 +81,18 @@ try:
     st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
     collection_subset = df[df["collection"] == selected_collection]
 
-    if (
-        "affiliation" in collection_subset.columns
-        and collection_subset["affiliation"].notna().sum() > 0
-    ):
-        affiliation_counts_global = (
-            collection_subset["affiliation"].dropna().value_counts()
+    if "affiliation" in collection_subset.columns and collection_subset["affiliation"].notna().sum() > 0:
+        affiliation_counts = collection_subset["affiliation"].dropna().value_counts()
+        fig_aff = px.pie(
+            names=affiliation_counts.index,
+            values=affiliation_counts.values,
+            title="Affiliation (Interactive)"
         )
-        fig_aff_global, ax_aff_global = plt.subplots(figsize=(6, 6))
-        wedges, texts = ax_aff_global.pie(
-            affiliation_counts_global,
-            labels=affiliation_counts_global.index,
-            startangle=140,
-        )
-        ax_aff_global.axis("equal")
-        ax_aff_global.set_title("Affiliation")
-        st.pyplot(fig_aff_global)
+        st.plotly_chart(fig_aff, use_container_width=True)
     else:
         st.info("No affiliation information is present for the selected collection.")
 
     st.subheader("🧑‍🔬 Dataset Distribution by Contributor (Selected Collection)")
-
-    if (
-        "contributor" in collection_subset.columns
-        and collection_subset["contributor"].notna().sum() > 0
-    ):
-        contributor_counts_global = (
-            collection_subset["contributor"].dropna().value_counts()
-        )
-        fig_contrib_global, ax_contrib_global = plt.subplots(figsize=(6, 6))
-        wedges, texts = ax_contrib_global.pie(
-            contributor_counts_global,
-            labels=contributor_counts_global.index,
-            startangle=140,
-        )
-        ax_contrib_global.axis("equal")
-        ax_contrib_global.set_title("Contributor")
-        st.pyplot(fig_contrib_global)
-    else:
-        st.info("No contributor information is present for the selected collection.")
 
     # Pie chart for number_of_files per dataset
     st.subheader("📈 File Distribution in Selected Collection")
