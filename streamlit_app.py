@@ -94,6 +94,7 @@ try:
         ax2.axis("equal")
         ax2.set_title("Contributor")
         ax1.legend(wedges1, affiliation_counts.index, title="Affiliations", loc="center left", bbox_to_anchor=(1.7, 0.5), fontsize="small")
+        ax2.legend(wedges2, contributor_counts.index, title="Contributors", loc="center left", bbox_to_anchor=(1.7, 0.25), fontsize="small")
         st.pyplot(fig_aff)
     else:
         st.info("No affiliation or contributor information is present for the selected collection.")
