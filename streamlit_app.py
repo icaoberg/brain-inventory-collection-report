@@ -55,6 +55,14 @@ try:
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
     # ─────────────────────────────────────────────
+    # Collections Section with Dropdown
+    # ─────────────────────────────────────────────
+    st.subheader("📁 Collections")
+    unique_collections = sorted(df["collection"].dropna().unique())
+    selected_collection = st.selectbox("Select a Collection:", unique_collections)
+    st.markdown(f"You selected: **{selected_collection}**")
+
+    # ─────────────────────────────────────────────
     # First Histogram: Count of Datasets per Collection
     # ─────────────────────────────────────────────
     st.subheader("📊 Dataset Count per Collection")
