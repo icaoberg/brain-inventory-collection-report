@@ -113,29 +113,25 @@ try:
     else:
         st.info("No contributor information is present for the selected collection.")
 
-    # Pie chart for number_of_files per dataset
     st.subheader("📈 File Distribution in Selected Collection")
+
+    # Filter and prepare pie data
     pie_data = df[df["collection"] == selected_collection].set_index("bildid")[
         "number_of_files"
     ]
     pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
 
-    fig3, ax3 = plt.subplots(figsize=(6, 6))
-    wedges, _, _ = ax3.pie(pie_data, labels=None, autopct="%1.1f%%", startangle=140)
-    ax3.axis("equal")
-    ax3.set_title("Number of Files per Dataset")
-    labels = list(pie_data.index)
-    num_cols = (len(labels) - 1) // 25 + 1
-    ax3.legend(
-        wedges,
-        labels,
-        title="Brain ID",
-        loc="center left",
-        bbox_to_anchor=(1, 0.5),
-        fontsize="small",
-        ncol=num_cols,
-    )
-    st.pyplot(fig3)
+    if not pie_data.empty:
+        fig = px.pie(
+            names=pie_data.index,
+            values=pie_data.values,
+            title="Number of Files per Dataset",
+            hole=0.3,  # Optional: for donut-style
+        )
+        fig.update_traces(textinfo="label+percent")
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.info("No file distribution data available for the selected collection.")
 
     # Histogram: Dataset Count per Collection
     st.subheader("📊 Dataset Count per Collection")
