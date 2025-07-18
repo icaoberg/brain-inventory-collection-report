@@ -11,9 +11,6 @@ from plots.download_get_data import load_data
 from plots.intro import print_intro
 
 
-# Dropdown
-selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
-
 # ────────────────────────────────
 # App Title and Introduction
 # ────────────────────────────────
@@ -32,6 +29,7 @@ try:
     # Collection Selection Dropdown
     # ────────────────────────────────
     st.subheader("📁 Collections")
+    selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.selectbox(
@@ -69,7 +67,6 @@ try:
     # ────────────────────────────────
     # Pie Chart: MIME Types
     # ────────────────────────────────
-
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
