@@ -63,6 +63,7 @@ try:
     ax.set_title("Number of Datasets per Collection")
     ax.set_xlabel("Collection")
     ax.set_ylabel("Dataset Count")
+    ax.tick_params(axis="x", rotation=90)  # Rotate labels vertically
     ax.grid(axis="y", linestyle="--", alpha=0.7)
     st.pyplot(fig)
 
