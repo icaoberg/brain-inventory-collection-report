@@ -96,16 +96,18 @@ try:
     # General Modality Pie Chart
     # ─────────────────────────────────────────────
     st.subheader("🧪 Dataset Distribution by General Modality")
-    if "general_modality" in df.columns and df["general_modality"].notna().sum() > 0:
-        modality_counts = df["general_modality"].dropna().value_counts()
+    if "general_modality" in df.columns and df["generalmodality"].notna().sum() > 0:
+        modality_counts = df["generalmodality"].dropna().value_counts()
         fig_mod, ax_mod = plt.subplots(figsize=(6, 6))
         wedges, _, _ = ax_mod.pie(modality_counts, labels=None, autopct="%1.1f%%", startangle=140)
         ax_mod.axis("equal")
-        ax_mod.set_title("Dataset Count by General Modality")
-        ax_mod.legend(wedges, modality_counts.index, title="General Modality", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
+        ax_mod.set_title("Dataset Count by Modality")
+        ax_mod.legend(wedges, modality_counts.index, title="Modality", loc="center left", bbox_to_anchor=(1, 0.5), fontsize="small")
         st.pyplot(fig_mod)
     else:
         st.info("No general modality information is present.")
+    
+    
     # File Types Pie Chart
     st.subheader("🗂️ File Types Distribution")
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
