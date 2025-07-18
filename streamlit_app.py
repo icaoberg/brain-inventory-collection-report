@@ -58,7 +58,11 @@ try:
     # Collections
     st.subheader("📁 Collections")
     unique_collections = sorted(df["collection"].dropna().unique())
-    selected_collection = st.selectbox("Select a Collection:", unique_collections)
+    default_index = unique_collections.index("26") if "26" in unique_collections else 0
+    selected_collection = st.selectbox(
+        "Select a Collection:", unique_collections, index=default_index
+    )
+
     st.markdown(f"You selected: **{selected_collection}**")
 
     filtered_df = df[df["collection"] == selected_collection][
