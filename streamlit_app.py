@@ -91,8 +91,6 @@ try:
         st.pyplot(fig_aff)
     else:
         st.info("No affiliation information is present for the selected collection.")
-    else:
-        st.info("No affiliation information is present.")
 
     # ─────────────────────────────────────────────
     # General Modality Pie Chart
