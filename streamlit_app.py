@@ -101,53 +101,6 @@ try:
     )
     st.pyplot(fig3)
 
-    st.subheader("🏛️ Dataset Distribution by Affiliation")
-    pie_data = df[df["collection"] == selected_collection].set_index("bildid")[
-        "affiliation"
-    ]
-    pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
-
-    fig3, ax4 = plt.subplots(figsize=(6, 6))
-    wedges, _, _ = ax3.pie(pie_data, labels=None, autopct="%1.1f%%", startangle=140)
-    ax3.axis("equal")
-    ax3.set_title("Affiliation Distribution")
-    labels = list(pie_data.index)
-    num_cols = (len(labels) - 1) // 25 + 1
-    ax3.legend(
-        wedges,
-        labels,
-        title="Affiliation",
-        loc="center left",
-        bbox_to_anchor=(1, 0.5),
-        fontsize="small",
-        ncol=num_cols,
-    )
-    st.pyplot(figs)
-
-    st.subheader("📦 Total Number of Files per Collection")
-    collection_file_counts = (
-        df.groupby("collection")["number_of_files"].sum().sort_index()
-    )
-    top5_files = (
-        collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
-    )
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
-    bars2 = collection_file_counts.plot(kind="bar", ax=ax2, color="lightcoral")
-    for i, label in enumerate(collection_file_counts.index):
-        if label in top5_files:
-            bars2.patches[i].set_color("indianred")
-            bars2.patches[i].set_label(
-                "Other" if label.lower() == "number_of_files" else label
-            )
-    ax2.legend(title="Top 5 Collections")
-    ax2.set_title("Total Number of Files per Collection")
-    ax2.set_xlabel("")
-    ax2.set_ylabel("File Count")
-    ax2.set_xticklabels([])
-    ax2.tick_params(axis="x", bottom=False)
-    ax2.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig2)
-
     # File Types Pie Chart
     st.subheader("🗂️ File Types Distribution")
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
