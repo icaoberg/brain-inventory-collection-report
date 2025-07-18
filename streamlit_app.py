@@ -89,7 +89,7 @@ try:
         fig_aff = px.pie(
             names=affiliation_counts.index,
             values=affiliation_counts.values,
-            title="Affiliations",
+            title="Affiliations in Selected Collection",
         )
         st.plotly_chart(fig_aff, use_container_width=True)
     else:
@@ -105,7 +105,7 @@ try:
         fig_contrib = px.pie(
             names=contributor_counts.index,
             values=contributor_counts.values,
-            title="Contributors",
+            title="Contributors in Selected Collection",
             hole=0.3,  # Optional: donut style
         )
         fig_contrib.update_traces(textinfo="label+percent")
@@ -125,7 +125,7 @@ try:
         fig = px.pie(
             names=pie_data.index,
             values=pie_data.values,
-            title="Number of Files per Dataset",
+            title="File counts in Selected Collection",
             hole=0.3,  # Optional: for donut-style
         )
         fig.update_traces(textinfo="label+percent")
