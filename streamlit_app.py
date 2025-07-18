@@ -42,7 +42,7 @@ try:
     # Sort by number_of_files in descending order
     df_sorted = df.sort_values(by="number_of_files", ascending=False)
 
-    # Select and rename columns for display
+    # Select and rename columns for preview
     preview_df = df_sorted[["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
         "collection": "Collection",
         "bildid": "Brain ID",
@@ -50,7 +50,7 @@ try:
         "pretty_size": "Size"
     })
 
-    # Display table preview without index
+    # Display table preview
     st.subheader("Preview: Sorted by Number of Files (Descending)")
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
@@ -61,6 +61,16 @@ try:
     unique_collections = sorted(df["collection"].dropna().unique())
     selected_collection = st.selectbox("Select a Collection:", unique_collections)
     st.markdown(f"You selected: **{selected_collection}**")
+
+    # Filtered table for selected collection
+    filtered_df = df[df["collection"] == selected_collection][["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
+        "collection": "Collection",
+        "bildid": "Brain ID",
+        "number_of_files": "Number of Files",
+        "pretty_size": "Size"
+    })
+
+    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
     # ─────────────────────────────────────────────
     # First Histogram: Count of Datasets per Collection
