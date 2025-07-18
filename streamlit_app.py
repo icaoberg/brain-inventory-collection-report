@@ -7,10 +7,12 @@ import humanize
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-# App Title
+# ────────────────────────────────
+# App Title and Introduction
+# ────────────────────────────────
+
 st.title("🧠 Brain Image Library Inventory Report")
 
-# Introduction
 st.markdown(
     """
 The **Brain Image Library (BIL)** is a national public resource that supports the storage, sharing, and analysis of large-scale brain imaging datasets. 
@@ -18,30 +20,40 @@ This report provides a snapshot of the current dataset inventory, highlighting k
 """
 )
 
-# Subtitle with today's date
+# Display today's date
 today_str = datetime.today().strftime("%B %d, %Y")
 st.markdown(f"### 📅 Report Date: {today_str}")
 
-# Load data
+# ────────────────────────────────
+# Load and Parse JSON Data
+# ────────────────────────────────
+
 URL = "https://download.brainimagelibrary.org//inventory/daily/reports/today.json"
 st.caption(f"Loading data from: {URL}")
 
 try:
+    # Request and load JSON into DataFrame
     response = requests.get(URL)
     response.raise_for_status()
     data = response.json()
     df = pd.DataFrame(data)
 
+    # Extract 2-character collection code from bildirectory
     def extract_collection(path):
         match = re.search(r"/bil/data/([a-f0-9]{2})/", path)
         return match.group(1) if match else None
 
     df["collection"] = df["bildirectory"].apply(extract_collection)
+
+    # Convert raw size to human-readable format
     df["pretty_size"] = df["size"].apply(
         lambda s: humanize.naturalsize(s, binary=True) if pd.notnull(s) else None
     )
+
+    # Sort for preview table
     df_sorted = df.sort_values(by="number_of_files", ascending=False)
 
+    # Preview table of key metadata
     preview_df = df_sorted[
         ["collection", "bildid", "number_of_files", "pretty_size"]
     ].rename(
@@ -56,16 +68,18 @@ try:
     st.subheader("Preview: Sorted by Number of Files (Descending)")
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
-    # Collections
+    # ────────────────────────────────
+    # Collection Selection Dropdown
+    # ────────────────────────────────
     st.subheader("📁 Collections")
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.selectbox(
         "Select a Collection:", unique_collections, index=default_index
     )
-
     st.markdown(f"You selected: **{selected_collection}**")
 
+    # Table of datasets for selected collection
     filtered_df = df[df["collection"] == selected_collection][
         ["collection", "bildid", "number_of_files", "pretty_size"]
     ].rename(
@@ -78,6 +92,9 @@ try:
     )
     st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
+    # ────────────────────────────────
+    # Pie Chart: Dataset by Affiliation
+    # ────────────────────────────────
     st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
     collection_subset = df[df["collection"] == selected_collection]
 
@@ -95,59 +112,38 @@ try:
     else:
         st.info("No affiliation information is present for the selected collection.")
 
+    # ────────────────────────────────
+    # Bar Chart: Dataset Count by Collection (Labeled by bildid)
+    # ────────────────────────────────
     st.subheader("📈 File Distribution in Selected Collection")
 
-    # Filter to selected collection only
+    # Filter datasets to selected collection
     bar_df = df[df["collection"] == selected_collection][
         ["collection", "bildid"]
     ].copy()
     bar_df["count"] = 1  # Each dataset contributes one count
 
-    # Create the bar chart and label each bar with its bildid
+    # Create labeled bar chart
     fig_bar = px.bar(
         bar_df,
         x="collection",
         y="count",
-        text="bildid",  # Add the label
+        text="bildid",
         hover_data={"bildid": True, "collection": False, "count": False},
         title="Number of Datasets per Collection",
         labels={"count": "Dataset", "collection": "Collection"},
     )
-
-    fig_bar.update_traces(textposition="outside")  # Position labels above bars
+    fig_bar.update_traces(textposition="outside")
     fig_bar.update_layout(
-        showlegend=False, xaxis=dict(tickangle=45), yaxis=dict(gridcolor="lightgray")
+        showlegend=False,
+        xaxis=dict(tickangle=45),
+        yaxis=dict(gridcolor="lightgray"),
     )
-
     st.plotly_chart(fig_bar, use_container_width=True)
 
-    st.subheader("📈 File Distribution in Selected Collection")
-
-    # Filter to selected collection only
-    bar_df = df[df["collection"] == selected_collection][
-        ["collection", "bildid"]
-    ].copy()
-    bar_df["count"] = 1  # Each dataset contributes one count
-
-    # Create the bar chart and label each bar with its bildid
-    fig_bar = px.bar(
-        bar_df,
-        x="collection",
-        y="count",
-        text="bildid",  # Add the label
-        hover_data={"bildid": True, "collection": False, "count": False},
-        title="Number of Datasets per Collection",
-        labels={"count": "Dataset", "collection": "Collection"},
-    )
-
-    fig_bar.update_traces(textposition="outside")  # Position labels above bars
-    fig_bar.update_layout(
-        showlegend=False, xaxis=dict(tickangle=45), yaxis=dict(gridcolor="lightgray")
-    )
-
-    st.plotly_chart(fig_bar, use_container_width=True)
-
-    # File Types Pie Chart
+    # ────────────────────────────────
+    # Pie Chart: File Types
+    # ────────────────────────────────
     st.subheader("🗂️ File Types Distribution")
     if "file_types" in df.columns and df["file_types"].notna().sum() > 0:
         filetype_counts = df["file_types"].dropna().value_counts()
@@ -169,7 +165,9 @@ try:
     else:
         st.info("No file-type information is present.")
 
-    # MIME Types Pie Chart
+    # ────────────────────────────────
+    # Pie Chart: MIME Types
+    # ────────────────────────────────
     st.subheader("📄 MIME Types Distribution")
     if "mime_types" in df.columns and df["mime_types"].notna().sum() > 0:
         mime_counts = df["mime_types"].dropna().value_counts()
