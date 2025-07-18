@@ -150,4 +150,4 @@ try:
     ax2.set_xlabel("")
     ax2.set_ylabel("File Count")
     ax2.set_xticklabels([])
-    ax2.tick_pa_ 
+    ax2.tick_pa_
