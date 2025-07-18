@@ -133,24 +133,41 @@ try:
     else:
         st.info("No file distribution data available for the selected collection.")
 
-    # Histogram: Dataset Count per Collection
     st.subheader("📊 Dataset Count per Collection")
+
+    # Compute dataset counts per collection
     collection_counts = df["collection"].value_counts().sort_index()
     top5_datasets = collection_counts.nlargest(5).index.tolist()
-    fig1, ax1 = plt.subplots(figsize=(10, 5))
-    bars1 = collection_counts.plot(kind="bar", ax=ax1, color="skyblue")
-    for i, label in enumerate(collection_counts.index):
-        if label in top5_datasets:
-            bars1.patches[i].set_color("steelblue")
-            bars1.patches[i].set_label("Other" if label.lower() == "count" else label)
-    ax1.legend(title="Top 5 Collections")
-    ax1.set_title("Number of Datasets per Collection")
-    ax1.set_xlabel("")
-    ax1.set_ylabel("Dataset Count")
-    ax1.set_xticklabels([])
-    ax1.tick_params(axis="x", bottom=False)
-    ax1.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig1)
+
+    # Build DataFrame for plotting
+    bar_df = collection_counts.reset_index()
+    bar_df.columns = ["collection", "count"]
+
+    # Tag top 5 for optional highlighting (if needed in styling)
+    bar_df["highlight"] = bar_df["collection"].apply(
+        lambda x: "Top 5" if x in top5_datasets else "Other"
+    )
+
+    # Create bar chart with Plotly
+    fig_bar = px.bar(
+        bar_df,
+        x="collection",
+        y="count",
+        color="highlight",
+        color_discrete_map={"Top 5": "steelblue", "Other": "skyblue"},
+        title="Number of Datasets per Collection",
+        labels={"collection": "", "count": "Dataset Count"},
+    )
+
+    fig_bar.update_layout(
+        xaxis_tickangle=0,
+        showlegend=True,
+        legend_title_text="Legend",
+        xaxis=dict(showticklabels=False),  # Hide X labels as in original
+        yaxis=dict(gridcolor="lightgray"),
+    )
+
+    st.plotly_chart(fig_bar, use_container_width=True)
 
     # Histogram: Total Number of Files per Collection
     st.subheader("📦 Total Number of Files per Collection")
