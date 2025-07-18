@@ -81,25 +81,28 @@ try:
     st.pyplot(fig3)
 
     # Histogram: Dataset Count per Collection
-    st.subheader("📊 Dataset Count per Collection")
-    collection_counts = df["collection"].value_counts().sort_index()
-    top5_datasets = collection_counts.nlargest(5).index.tolist()
-    fig1, ax1 = plt.subplots(figsize=(10, 5))
-    bars1 = collection_counts.plot(kind="bar", ax=ax1, color="skyblue")
-    for i, label in enumerate(collection_counts.index):
-        if label in top5_datasets:
-            bars1.patches[i].set_color("steelblue")
-            bars1.patches[i].set_label("Other" if label.lower() == "count" else label)
-    ax1.legend(title="Top 5 Collections")
-    ax1.set_title("Number of Datasets per Collection")
-    ax1.set_xlabel("")
-    ax1.set_ylabel("Dataset Count")
-    ax1.set_xticklabels([])
-    ax1.tick_params(axis="x", bottom=False)
-    ax1.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig1)
+    st.subheader("🏛️ Dataset Distribution by Affiliation")
+    if "affiliation" in df.columns and df["affiliation"].notna().sum() > 0:
+        affiliation_counts = df["affiliation"].dropna().value_counts()
+        fig_aff, ax_aff = plt.subplots(figsize=(6, 6))
+        wedges, texts, _ = ax_aff.pie(affiliation_counts, labels=affiliation_counts.index, startangle=140)
+        ax_aff.axis("equal")
+        ax_aff.set_title("Affiliation")
+        st.pyplot(fig_aff)
+    else:
+        st.info("No affiliation information is present.")
 
-    # Histogram: Total Number of Files per Collection
+    st.subheader("🧑‍🔬 Dataset Distribution by Contributor")
+    if "contributor" in df.columns and df["contributor"].notna().sum() > 0:
+        contributor_counts = df["contributor"].dropna().value_counts()
+        fig_contrib, ax_contrib = plt.subplots(figsize=(6, 6))
+        wedges, texts, _ = ax_contrib.pie(contributor_counts, labels=contributor_counts.index, startangle=140)
+        ax_contrib.axis("equal")
+        ax_contrib.set_title("Contributor")
+        st.pyplot(fig_contrib)
+    else:
+        st.info("No contributor information is present.")
+
     st.subheader("📦 Total Number of Files per Collection")
     collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
     top5_files = collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
