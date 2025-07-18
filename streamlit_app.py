@@ -131,34 +131,6 @@ try:
     st.pyplot(fig1)
 
     # ─────────────────────────────────────────────
-    # 📦 Total Number of Files per Collection
-    # ─────────────────────────────────────────────
-    st.subheader("📦 Total Number of Files per Collection")
-    collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
-    top5_files = collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
-
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
-    bars2 = collection_file_counts.plot(kind="bar", ax=ax2, color="lightcoral")
-
-    for i, label in enumerate(collection_file_counts.index):
-        if label in top5_files:
-            display_label = "Other" if label.lower() in ["other", "number_of_files"] else label
-            bars2.patches[i].set_color("indianred")
-            bars2.patches[i].set_label(display_label)
-
-    handles2, labels2 = ax2.get_legend_handles_labels()
-    by_label2 = dict(zip(labels2, handles2))
-    ax2.legend(by_label2.values(), by_label2.keys(), title="Top 5 Collections")
-
-    ax2.set_title("Total Number of Files per Collection")
-    ax2.set_xlabel("")
-    ax2.set_ylabel("File Count")
-    ax2.set_xticklabels([])
-    ax2.tick_params(axis="x", bottom=False)
-    ax2.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig2)
-
-    # ─────────────────────────────────────────────
     # 🗂️ File Types Distribution Pie Chart
     # ─────────────────────────────────────────────
     st.subheader("🗂️ File Types Distribution")
