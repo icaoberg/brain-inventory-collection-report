@@ -135,35 +135,26 @@ try:
 
     st.subheader("📊 Dataset Count per Collection")
 
-    # Compute dataset counts per collection
-    collection_counts = df["collection"].value_counts().sort_index()
-    top5_datasets = collection_counts.nlargest(5).index.tolist()
-
-    # Build DataFrame for plotting
-    bar_df = collection_counts.reset_index()
-    bar_df.columns = ["collection", "count"]
-
-    # Tag top 5 for optional highlighting (if needed in styling)
-    bar_df["highlight"] = bar_df["collection"].apply(
-        lambda x: "Top 5" if x in top5_datasets else "Other"
+    # Group by collection and get count + bildid list
+    grouped = df.groupby("collection")["bildid"].agg(
+        ["count", lambda x: ", ".join(x.astype(str))]
     )
+    grouped.columns = ["count", "bildids"]
+    grouped = grouped.reset_index()
 
-    # Create bar chart with Plotly
+    # Create bar chart
     fig_bar = px.bar(
-        bar_df,
+        grouped,
         x="collection",
         y="count",
-        color="highlight",
-        color_discrete_map={"Top 5": "steelblue", "Other": "skyblue"},
+        hover_data={"bildids": True, "count": True, "collection": False},
         title="Number of Datasets per Collection",
-        labels={"collection": "", "count": "Dataset Count"},
+        labels={"count": "Dataset Count", "collection": ""},
     )
 
     fig_bar.update_layout(
-        xaxis_tickangle=0,
-        showlegend=True,
-        legend_title_text="Legend",
-        xaxis=dict(showticklabels=False),  # Hide X labels as in original
+        showlegend=False,
+        xaxis=dict(showticklabels=False),
         yaxis=dict(gridcolor="lightgray"),
     )
 
