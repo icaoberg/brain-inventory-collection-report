@@ -7,7 +7,7 @@ import humanize
 import matplotlib.pyplot as plt
 
 # App Title
-st.title("🧠 Brain Image Library Inventory Report")
+st.title("🧠 Brain Image Library Daily Report")
 
 # Introduction
 st.markdown(
@@ -19,7 +19,7 @@ This report provides a snapshot of the current dataset inventory, highlighting k
 
 # Subtitle with today's date
 today_str = datetime.today().strftime("%B %d, %Y")
-st.markdown(f"### 📅 Report Date: {today_str}")
+st.markdown(f"### 📅 {today_str}")
 
 # Load data
 URL = "https://download.brainimagelibrary.org//inventory/daily/reports/today.json"
