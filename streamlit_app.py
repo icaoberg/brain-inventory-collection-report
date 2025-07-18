@@ -55,7 +55,7 @@ try:
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
     # ─────────────────────────────────────────────
-    # 📁 Collections Section with Dropdown and Table
+    # 📁 Collections Section
     # ─────────────────────────────────────────────
     st.subheader("📁 Collections")
     unique_collections = sorted(df["collection"].dropna().unique())
@@ -72,25 +72,34 @@ try:
 
     st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
-    # Pie Chart for number_of_files in selected collection
+    # Pie Chart of all datasets in selected collection
     st.subheader("📈 File Distribution in Selected Collection")
-
     pie_data = df[df["collection"] == selected_collection].set_index("bildid")["number_of_files"]
     pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
 
-    top5 = pie_data.head(5)
-    other_sum = pie_data[5:].sum()
-    if other_sum > 0:
-        top5["Other"] = other_sum
-
-    fig3, ax3 = plt.subplots()
-    ax3.pie(top5, labels=top5.index, autopct="%1.1f%%", startangle=140)
+    fig3, ax3 = plt.subplots(figsize=(6, 6))
+    wedges, texts, autotexts = ax3.pie(
+        pie_data,
+        labels=None,
+        autopct="%1.1f%%",
+        startangle=140
+    )
     ax3.axis("equal")
-    ax3.set_title("Number of Files per Dataset (Top 5)")
+    ax3.set_title("Number of Files per Dataset")
+
+    ax3.legend(
+        wedges,
+        pie_data.index,
+        title="Brain ID",
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        fontsize="small"
+    )
+
     st.pyplot(fig3)
 
     # ─────────────────────────────────────────────
-    # 📊 First Histogram: Count of Datasets per Collection
+    # 📊 Histogram: Count of Datasets per Collection
     # ─────────────────────────────────────────────
     st.subheader("📊 Dataset Count per Collection")
     collection_counts = df["collection"].value_counts().sort_index()
@@ -118,7 +127,7 @@ try:
     st.pyplot(fig1)
 
     # ─────────────────────────────────────────────
-    # 📦 Second Histogram: Total Number of Files per Collection
+    # 📦 Histogram: Total Number of Files per Collection
     # ─────────────────────────────────────────────
     st.subheader("📦 Total Number of Files per Collection")
     collection_file_counts = df.groupby("collection")["number_of_files"].sum().sort_index()
@@ -141,9 +150,4 @@ try:
     ax2.set_xlabel("")
     ax2.set_ylabel("File Count")
     ax2.set_xticklabels([])
-    ax2.tick_params(axis="x", bottom=False)
-    ax2.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig2)
-
-except Exception as e:
-    st.error(f"Failed to load or process data: {e}")
+    ax2.tick_pa_ 
