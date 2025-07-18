@@ -81,18 +81,35 @@ try:
     st.subheader("🏛️ Dataset Distribution by Affiliation (Selected Collection)")
     collection_subset = df[df["collection"] == selected_collection]
 
-    if "affiliation" in collection_subset.columns and collection_subset["affiliation"].notna().sum() > 0:
+    if (
+        "affiliation" in collection_subset.columns
+        and collection_subset["affiliation"].notna().sum() > 0
+    ):
         affiliation_counts = collection_subset["affiliation"].dropna().value_counts()
         fig_aff = px.pie(
             names=affiliation_counts.index,
             values=affiliation_counts.values,
-            title="Affiliation (Interactive)"
+            title="Affiliation (Interactive)",
         )
         st.plotly_chart(fig_aff, use_container_width=True)
     else:
         st.info("No affiliation information is present for the selected collection.")
 
     st.subheader("🧑‍🔬 Dataset Distribution by Contributor (Selected Collection)")
+
+    if (
+        "contributor" in collection_subset.columns
+        and collection_subset["contributor"].notna().sum() > 0
+    ):
+        contributor_counts = collection_subset["contributor"].dropna().value_counts()
+        fig_contrib = px.pie(
+            names=contributor_counts.index,
+            values=contributor_counts.values,
+            title="Contributor (Interactive)",
+        )
+        st.plotly_chart(fig_contrib, use_container_width=True)
+    else:
+        st.info("No contributor information is present for the selected collection.")
 
     # Pie chart for number_of_files per dataset
     st.subheader("📈 File Distribution in Selected Collection")
