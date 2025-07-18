@@ -135,23 +135,21 @@ try:
 
     st.subheader("📊 Dataset Count per Collection")
 
-    # Group by collection and get count + bildid list
-    grouped = df.groupby("collection")["bildid"].agg(
-        ["count", lambda x: ", ".join(x.astype(str))]
-    )
-    grouped.columns = ["count", "bildids"]
-    grouped = grouped.reset_index()
+    # Filter and prepare the data
+    bar_df = df[["collection", "bildid"]].copy()
+    bar_df["count"] = 1  # One dataset per row
 
     # Create bar chart
     fig_bar = px.bar(
-        grouped,
+        bar_df,
         x="collection",
         y="count",
-        hover_data={"bildids": True, "count": True, "collection": False},
+        hover_data={"bildid": True, "collection": False, "count": False},
         title="Number of Datasets per Collection",
-        labels={"count": "Dataset Count", "collection": ""},
+        labels={"count": "Dataset", "collection": ""},
     )
 
+    # Hide x-axis tick labels and remove legend
     fig_bar.update_layout(
         showlegend=False,
         xaxis=dict(showticklabels=False),
