@@ -55,24 +55,6 @@ try:
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
     # ─────────────────────────────────────────────
-    # Collections Section with Dropdown
-    # ─────────────────────────────────────────────
-    st.subheader("📁 Collections")
-    unique_collections = sorted(df["collection"].dropna().unique())
-    selected_collection = st.selectbox("Select a Collection:", unique_collections)
-    st.markdown(f"You selected: **{selected_collection}**")
-
-    # Filtered table for selected collection
-    filtered_df = df[df["collection"] == selected_collection][["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
-        "collection": "Collection",
-        "bildid": "Brain ID",
-        "number_of_files": "Number of Files",
-        "pretty_size": "Size"
-    })
-
-    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-
-    # ─────────────────────────────────────────────
     # First Histogram: Count of Datasets per Collection
     # ─────────────────────────────────────────────
     st.subheader("📊 Dataset Count per Collection")
@@ -127,6 +109,24 @@ try:
     ax2.tick_params(axis="x", bottom=False)
     ax2.grid(axis="y", linestyle="--", alpha=0.7)
     st.pyplot(fig2)
+
+    # ─────────────────────────────────────────────
+    # Collections Section with Dropdown
+    # ─────────────────────────────────────────────
+    st.subheader("📁 Collections")
+    unique_collections = sorted(df["collection"].dropna().unique())
+    selected_collection = st.selectbox("Select a Collection:", unique_collections)
+    st.markdown(f"You selected: **{selected_collection}**")
+
+    # Filtered table for selected collection
+    filtered_df = df[df["collection"] == selected_collection][["collection", "bildid", "number_of_files", "pretty_size"]].rename(columns={
+        "collection": "Collection",
+        "bildid": "Brain ID",
+        "number_of_files": "Number of Files",
+        "pretty_size": "Size"
+    })
+
+    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
