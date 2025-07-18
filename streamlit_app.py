@@ -95,71 +95,57 @@ try:
     else:
         st.info("No affiliation information is present for the selected collection.")
 
-    st.subheader("🧑‍🔬 Dataset Distribution by Contributor (Selected Collection)")
-
-    if (
-        "contributor" in collection_subset.columns
-        and collection_subset["contributor"].notna().sum() > 0
-    ):
-        contributor_counts = collection_subset["contributor"].dropna().value_counts()
-        fig_contrib = px.pie(
-            names=contributor_counts.index,
-            values=contributor_counts.values,
-            title="Contributors in Selected Collection",
-            hole=0.3,  # Optional: donut style
-        )
-        fig_contrib.update_traces(textinfo="label+percent")
-        st.plotly_chart(fig_contrib, use_container_width=True)
-    else:
-        st.info("No contributor information is present for the selected collection.")
-
     st.subheader("📈 File Distribution in Selected Collection")
 
-    # Define bar_df with one row per dataset
-    bar_df = df[["collection", "bildid"]].copy()
+    # Filter to selected collection only
+    bar_df = df[df["collection"] == selected_collection][
+        ["collection", "bildid"]
+    ].copy()
     bar_df["count"] = 1  # Each dataset contributes one count
 
-    # Create the bar chart
+    # Create the bar chart and label each bar with its bildid
     fig_bar = px.bar(
         bar_df,
         x="collection",
         y="count",
-        hover_data={"bildid": False, "collection": False, "count": False},
+        text="bildid",  # Add the label
+        hover_data={"bildid": True, "collection": False, "count": False},
         title="Number of Datasets per Collection",
         labels={"count": "Dataset", "collection": "Collection"},
     )
 
-    # Update layout with rotated x-axis labels and no legend
+    fig_bar.update_traces(textposition="outside")  # Position labels above bars
     fig_bar.update_layout(
         showlegend=False, xaxis=dict(tickangle=45), yaxis=dict(gridcolor="lightgray")
     )
 
     st.plotly_chart(fig_bar, use_container_width=True)
 
-    # Histogram: Total Number of Files per Collection
-    st.subheader("📦 Total Number of Files per Collection")
-    collection_file_counts = (
-        df.groupby("collection")["number_of_files"].sum().sort_index()
+    st.subheader("📈 File Distribution in Selected Collection")
+
+    # Filter to selected collection only
+    bar_df = df[df["collection"] == selected_collection][
+        ["collection", "bildid"]
+    ].copy()
+    bar_df["count"] = 1  # Each dataset contributes one count
+
+    # Create the bar chart and label each bar with its bildid
+    fig_bar = px.bar(
+        bar_df,
+        x="collection",
+        y="count",
+        text="bildid",  # Add the label
+        hover_data={"bildid": True, "collection": False, "count": False},
+        title="Number of Datasets per Collection",
+        labels={"count": "Dataset", "collection": "Collection"},
     )
-    top5_files = (
-        collection_file_counts.sort_values(ascending=False).head(5).index.tolist()
+
+    fig_bar.update_traces(textposition="outside")  # Position labels above bars
+    fig_bar.update_layout(
+        showlegend=False, xaxis=dict(tickangle=45), yaxis=dict(gridcolor="lightgray")
     )
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
-    bars2 = collection_file_counts.plot(kind="bar", ax=ax2, color="lightcoral")
-    for i, label in enumerate(collection_file_counts.index):
-        if label in top5_files:
-            bars2.patches[i].set_color("indianred")
-            bars2.patches[i].set_label(
-                "Other" if label.lower() == "number_of_files" else label
-            )
-    ax2.legend(title="Top 5 Collections")
-    ax2.set_title("Total Number of Files per Collection")
-    ax2.set_xlabel("")
-    ax2.set_ylabel("File Count")
-    ax2.set_xticklabels([])
-    ax2.tick_params(axis="x", bottom=False)
-    ax2.grid(axis="y", linestyle="--", alpha=0.7)
-    st.pyplot(fig2)
+
+    st.plotly_chart(fig_bar, use_container_width=True)
 
     # File Types Pie Chart
     st.subheader("🗂️ File Types Distribution")
