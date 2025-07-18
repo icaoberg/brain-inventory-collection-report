@@ -115,26 +115,11 @@ try:
 
     st.subheader("📈 File Distribution in Selected Collection")
 
-    # Filter and prepare pie data
-    pie_data = df[df["collection"] == selected_collection].set_index("bildid")[
-        "number_of_files"
-    ]
-    pie_data = pie_data[pie_data > 0].sort_values(ascending=False)
+    # Define bar_df with one row per dataset
+    bar_df = df[["collection", "bildid"]].copy()
+    bar_df["count"] = 1  # Each dataset contributes one count
 
-    if not pie_data.empty:
-        fig = px.pie(
-            names=pie_data.index,
-            values=pie_data.values,
-            title="File counts in Selected Collection",
-            hole=0.3,  # Optional: for donut-style
-        )
-        fig.update_traces(textinfo="label+percent")
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.info("No file distribution data available for the selected collection.")
-
-    st.subheader("📊 Dataset Count per Collection")
-
+    # Create the bar chart
     fig_bar = px.bar(
         bar_df,
         x="collection",
@@ -144,10 +129,9 @@ try:
         labels={"count": "Dataset", "collection": "Collection"},
     )
 
+    # Update layout with rotated x-axis labels and no legend
     fig_bar.update_layout(
-        showlegend=False,
-        xaxis=dict(tickangle=45, showticklabels=True),  # Rotate labels  # Now visible
-        yaxis=dict(gridcolor="lightgray"),
+        showlegend=False, xaxis=dict(tickangle=45), yaxis=dict(gridcolor="lightgray")
     )
 
     st.plotly_chart(fig_bar, use_container_width=True)
