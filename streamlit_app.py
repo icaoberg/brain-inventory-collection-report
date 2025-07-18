@@ -84,7 +84,7 @@ try:
             collection_subset["affiliation"].dropna().value_counts()
         )
         fig_aff_global, ax_aff_global = plt.subplots(figsize=(6, 6))
-        wedges, texts, _ = ax_aff_global.pie(
+        wedges, texts = ax_aff_global.pie(
             affiliation_counts_global,
             labels=affiliation_counts_global.index,
             startangle=140,
