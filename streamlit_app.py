@@ -58,13 +58,30 @@ try:
     st.subheader("📊 Dataset Count per Collection")
     collection_counts = df["collection"].value_counts().sort_index()
 
+    # Identify top 5 collections by dataset count
+    top5 = df["collection"].value_counts().nlargest(5).index.tolist()
+
     fig, ax = plt.subplots(figsize=(10, 5))
-    collection_counts.plot(kind="bar", ax=ax)
+    bars = collection_counts.plot(kind="bar", ax=ax, color="skyblue")
+
+    # Customize bar colors and legend for top 5 only
+    for i, label in enumerate(collection_counts.index):
+        if label in top5:
+            bars.patches[i].set_color("steelblue")
+            bars.patches[i].set_label(label)
+
+    # Avoid duplicate legend entries
+    handles, labels = ax.get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    ax.legend(by_label.values(), by_label.keys(), title="Top 5 Collections")
+
+    # Final touches
     ax.set_title("Number of Datasets per Collection")
-    ax.set_xlabel("Collection")
+    ax.set_xlabel("")  # Remove x-axis label
     ax.set_ylabel("Dataset Count")
-    ax.tick_params(axis="x", rotation=90)  # Rotate labels vertically
+    ax.tick_params(axis="x", rotation=90)
     ax.grid(axis="y", linestyle="--", alpha=0.7)
+
     st.pyplot(fig)
 
 except Exception as e:
