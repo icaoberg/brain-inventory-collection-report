@@ -66,7 +66,7 @@ try:
 
     for i, label in enumerate(collection_counts.index):
         if label in top5_datasets:
-            display_label = "Others" if label.lower() == "other" else label
+            display_label = "Other" if label.lower() in ["other", "count"] else label
             bars1.patches[i].set_color("steelblue")
             bars1.patches[i].set_label(display_label)
 
@@ -94,7 +94,7 @@ try:
 
     for i, label in enumerate(collection_file_counts.index):
         if label in top5_files:
-            display_label = "Others" if label.lower() == "other" else label
+            display_label = "Other" if label.lower() in ["other", "number_of_files"] else label
             bars2.patches[i].set_color("indianred")
             bars2.patches[i].set_label(display_label)
 
