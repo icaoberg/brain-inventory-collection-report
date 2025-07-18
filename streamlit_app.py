@@ -124,7 +124,7 @@ try:
         bar_df,
         x="collection",
         y="count",
-        hover_data={"bildid": True, "collection": False, "count": False},
+        hover_data={"bildid": False, "collection": False, "count": False},
         title="Number of Datasets per Collection",
         labels={"count": "Dataset", "collection": "Collection"},
     )
