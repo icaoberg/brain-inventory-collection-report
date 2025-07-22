@@ -23,8 +23,9 @@ try:
     # ────────────────────────────────
     df = load_data()
 
-    st.subheader("Sorted by Number of Files (Descending)")
-    st.dataframe(df, use_container_width=True, hide_index=True)
+    st.subheader("Sorted by Number of Files")
+
+    st.dataframe(df[['metadata_version', 'bildid', 'generalmodality', 'technique', 'number_of_files']], use_container_width=True, hide_index=True)
 
     # ────────────────────────────────
     # Collection Selection Dropdown
