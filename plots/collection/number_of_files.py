@@ -4,11 +4,13 @@ import plotly.express as px
 
 def plot(df, selected_collection):
     # Filter to only datasets in selected collection
-    bar_df = df[df["collection"] == selected_collection][["collection", "bildid"]].copy()
-    
+    bar_df = df[df["collection"] == selected_collection][
+        ["collection", "bildid"]
+    ].copy()
+
     # Sort rows by bildid (ascending)
     bar_df = bar_df.sort_values(by="bildid", ascending=True)
-    
+
     # Add count column (each dataset = 1)
     bar_df["count"] = 1
 
