@@ -8,7 +8,7 @@ import humanize
 
 
 def load_data():
-    URL = "https://download.brainimagelibrary.org//inventory/daily/reports/today.json"
+    URL = "https://download.brainimagelibrary.org/inventory/daily/reports/today.json"
     st.caption(f"Loading data from: {URL}")
 
     response = requests.get(URL)

@@ -8,7 +8,7 @@ import humanize
 # Import modular plotting functions
 from plots.collection.affiliation import plot as affiliation_plot
 from plots.collection.contributors import plot as contributors_plot
-from plots.download_get_data import load_data
+from plots.download_and_get_data import load_data
 from plots.intro import print_intro
 
 
