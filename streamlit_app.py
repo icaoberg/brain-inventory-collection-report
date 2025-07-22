@@ -24,14 +24,25 @@ try:
     df = load_data()
 
     st.subheader("Sorted by Number of Files")
-
-    st.dataframe(df[['metadata_version', 'bildid', 'generalmodality', 'technique', 'number_of_files']], use_container_width=True, hide_index=True)
+    st.dataframe(
+        df[
+            [
+                "metadata_version",
+                "bildid",
+                "generalmodality",
+                "technique",
+                "number_of_files",
+            ]
+        ],
+        use_container_width=True,
+        hide_index=True,
+    )
 
     # ────────────────────────────────
     # Collection Selection Dropdown
     # ────────────────────────────────
     st.subheader("📁 Collections")
-    #selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
+    # selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.selectbox(
@@ -65,7 +76,6 @@ try:
     # ────────────────────────────────
     # Pie Chart: File Types
     # ────────────────────────────────
-
 
     # ────────────────────────────────
     # Pie Chart: MIME Types
