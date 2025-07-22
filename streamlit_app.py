@@ -32,6 +32,7 @@ try:
                 "generalmodality",
                 "technique",
                 "number_of_files",
+                "frequencies",
             ]
         ],
         use_container_width=True,
