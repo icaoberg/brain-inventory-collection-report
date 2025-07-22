@@ -7,6 +7,7 @@ import humanize
 
 # Import modular plotting functions
 from plots.collection.affiliation import plot as affiliation_plot
+from plots.collection.contributors import plot as contributors_plot
 from plots.download_get_data import load_data
 from plots.intro import print_intro
 
@@ -51,9 +52,10 @@ try:
     st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
     # ────────────────────────────────
-    # Pie Chart: Dataset by Affiliation
+    # Pie Chart: Dataset by Affiliation and Contributors
     # ────────────────────────────────
     affiliation_plot(df, selected_collection)
+    contributors_plot(df, selected_collection)
 
     # ────────────────────────────────
     # Bar Chart: Dataset Count by Collection (Labeled by bildid)
