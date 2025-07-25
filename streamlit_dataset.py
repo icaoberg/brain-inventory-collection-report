@@ -5,7 +5,8 @@ import re
 from datetime import datetime
 import humanize
 
-from plots.download_and_get_data import load_data
+from plots.download_and_get_data import load_collectioon_data
+from plots.download_and_get_data import load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 
 # ────────────────────────────────
@@ -17,7 +18,7 @@ try:
     # ────────────────────────────────
     # Load and Parse JSON Data
     # ────────────────────────────────
-    df = load_data()
+    df = load_collection_data()
 
     # ────────────────────────────────
     # Collection Selection in Sidebar
@@ -41,5 +42,7 @@ try:
         "Select a Dataset (BILD ID)", matching_bildids
     )
 
+    data = load_dataset_data(selected_bildid)
+    print(data.keys())
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
