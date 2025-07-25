@@ -74,3 +74,25 @@ def load_dataset_data(bildid: str) -> Dict:
             return data
     except Exception as e:
         raise ValueError(f"Failed to load dataset for BILD ID '{bildid}': {e}")
+    
+def load_dataset_data(bildid: str) -> Dict:
+    """
+    Download and return the JSON metadata block for a given BILD ID.
+
+    Args:
+        bildid (str): The BILD dataset ID.
+
+    Returns:
+        Dict: Parsed JSON data from the dataset file.
+
+    Raises:
+        ValueError: If the request fails or JSON is invalid.
+    """
+    url = f"https://download.brainimagelibrary.org/inventory/datasets/{bildid}.json"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        raise ValueError(f"Failed to load dataset for BILD ID '{bildid}': {e}")
