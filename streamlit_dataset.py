@@ -22,7 +22,7 @@ try:
     # ────────────────────────────────
     # Collection Selection in Sidebar
     # ────────────────────────────────
-    st.sidebar.header("📁 BIL Collections")
+    st.sidebar.header("📁 Collections")
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.sidebar.selectbox(
