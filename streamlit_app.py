@@ -61,8 +61,9 @@ try:
     total_files = collection_subset["number_of_files"].fillna(0).sum() if "number_of_files" in collection_subset.columns else 0
     total_size_bytes = collection_subset["size"].fillna(0).sum() if "size" in collection_subset.columns else 0
     readable_size = humanize.naturalsize(total_size_bytes, binary=True)
+
     avg_score = collection_subset["score"].dropna().mean() if "score" in collection_subset.columns else None
-    coverage_pct = f"{avg_score * 100:.2f}%" if pd.notna(avg_score) else "N/A"
+    coverage_pct = f"{avg_score * 1:.2f}%" if pd.notna(avg_score) else "N/A"
 
     # Display as bullet points
     st.markdown(f"""
