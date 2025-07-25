@@ -26,7 +26,7 @@ try:
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.sidebar.selectbox(
-        "Select a Collection:", unique_collections, index=default_index
+        "Select a Collection", unique_collections, index=default_index
     )
 
     # Filter to selected collection
@@ -38,7 +38,7 @@ try:
     st.sidebar.markdown("### 📌 Datasets in Collection")
     matching_bildids = sorted(collection_subset["bildid"].dropna().unique())
     selected_bildid = st.sidebar.selectbox(
-        "Select a Dataset (BILD ID):", matching_bildids
+        "Select a Dataset (BILD ID):\", matching_bildids
     )
 
 except Exception as e:
