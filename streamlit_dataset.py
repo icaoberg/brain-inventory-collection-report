@@ -43,7 +43,9 @@ try:
     )
 
     data = load_dataset_data(selected_bildid)
-    st.write(list(data.keys()))
+    st.write(f'Metadata version: {data["version"]}')
     st.write(f'General modality: {data["modality"]}')
+    st.write(f'Technique: {data["technique"]}')
+    st.write(list(data.keys()))
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
