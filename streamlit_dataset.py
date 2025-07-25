@@ -43,6 +43,6 @@ try:
     )
 
     data = load_dataset_data(selected_bildid)
-    print(data.keys())
+    st.write(list(jdata.keys()))
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
