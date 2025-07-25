@@ -44,5 +44,6 @@ try:
 
     data = load_dataset_data(selected_bildid)
     st.write(list(data.keys()))
+    st.write(f'General modality: {data["modality"]}')
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
