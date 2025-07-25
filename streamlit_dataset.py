@@ -32,5 +32,14 @@ try:
     # Filter to selected collection
     collection_subset = df[df["collection"] == selected_collection]
 
+    # ────────────────────────────────
+    # BILD ID Selection in Sidebar
+    # ────────────────────────────────
+    st.sidebar.markdown("### 📌 Datasets in Collection")
+    matching_bildids = sorted(collection_subset["bildid"].dropna().unique())
+    selected_bildid = st.sidebar.selectbox(
+        "Select a Dataset (BILD ID):", matching_bildids
+    )
+
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")

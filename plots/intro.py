@@ -28,4 +28,4 @@ def print_dataset_intro():
 
     # Display today's date
     today_str = datetime.today().strftime("%B %d, %Y")
-    st.markdown(f"### 📅 Report Date: {today_str}")
+    st.markdown(f"📅 Report Date: {today_str}")
