@@ -46,6 +46,12 @@ try:
     st.write(f'Metadata version: {data["version"]}')
     st.write(f'General modality: {data["modality"]}')
     st.write(f'Technique: {data["technique"]}')
-    st.write(list(data.keys()))
+
+    if "manifest" in data:
+        manifest_df = pd.DataFrame(data["manifest"])
+        st.write("📄 Manifest DataFrame:")
+        st.dataframe(manifest_df)
+    else:
+        st.warning("The 'manifest' key was not found in the JSON block.")
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
