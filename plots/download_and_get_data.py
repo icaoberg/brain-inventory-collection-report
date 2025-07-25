@@ -8,6 +8,7 @@ import humanize
 import gzip
 import json
 from typing import Dict
+from io import BytesIO
 
 
 def load_collection_data():
