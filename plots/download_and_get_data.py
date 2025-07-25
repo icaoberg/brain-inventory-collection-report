@@ -8,6 +8,7 @@ import humanize
 import gzip
 import json
 from typing import Dict
+import ast
 from io import BytesIO
 
 
@@ -60,7 +61,7 @@ def load_dataset_data(bildid: str) -> Dict:
         Dict: Parsed JSON data from the dataset file.
 
     Raises:
-        ValueError: If the request fails or JSON is invalid.
+        ValueError: If the request fails or content is invalid.
     """
     url = f"https://download.brainimagelibrary.org/inventory/datasets/{bildid}.json.gz"
     st.caption(f"Downloading data from: {url}")
@@ -70,7 +71,14 @@ def load_dataset_data(bildid: str) -> Dict:
         response.raise_for_status()
 
         with gzip.GzipFile(fileobj=BytesIO(response.content)) as gz:
-            data = json.load(gz)
-            return data
+            content = gz.read().decode("utf-8").strip()
+
+            try:
+                # Try parsing as JSON
+                return json.loads(content)
+            except json.JSONDecodeError:
+                # Fallback: safely parse as a Python dict
+                return ast.literal_eval(content)
+
     except Exception as e:
         raise ValueError(f"Failed to load dataset for BILD ID '{bildid}': {e}")
