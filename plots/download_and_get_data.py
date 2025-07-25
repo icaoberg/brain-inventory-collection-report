@@ -13,7 +13,6 @@ from io import BytesIO
 
 def load_collection_data():
     URL = "https://download.brainimagelibrary.org/inventory/daily/reports/today.json"
-    st.caption(f"Loading data from: {URL}")
 
     response = requests.get(URL)
     response.raise_for_status()
@@ -64,6 +63,7 @@ def load_dataset_data(bildid: str) -> Dict:
         ValueError: If the request fails or JSON is invalid.
     """
     url = f"https://download.brainimagelibrary.org/inventory/datasets/{bildid}.json.gz"
+    st.caption(f"Downloading data from: {url}")
 
     try:
         response = requests.get(url)
