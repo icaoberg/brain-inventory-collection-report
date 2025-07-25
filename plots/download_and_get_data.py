@@ -68,7 +68,7 @@ def load_dataset_data(bildid: str) -> Dict:
     try:
         response = requests.get(url)
         response.raise_for_status()
-        
+
         with gzip.GzipFile(fileobj=BytesIO(response.content)) as gz:
             data = json.load(gz)
             return data
