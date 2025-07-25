@@ -11,7 +11,7 @@ from plots.collection.contributors import plot as contributors_plot
 from plots.collection.modalities import plot as generalmodalities_plot
 from plots.collection.techniques import plot as techniques_plot
 
-from plots.download_and_get_data import load_data
+from plots.download_and_get_data import load_collection_data as load_data
 from plots.intro import print_collection_intro as print_intro
 
 # ────────────────────────────────
