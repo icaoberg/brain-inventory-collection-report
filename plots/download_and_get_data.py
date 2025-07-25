@@ -63,13 +63,13 @@ def load_dataset_data(bildid: str) -> Dict:
         ValueError: If the request fails or JSON is invalid.
     """
     url = f"https://download.brainimagelibrary.org/inventory/datasets/{bildid}.json.gz"
-    
+
     try:
         response = requests.get(url)
         response.raise_for_status()
         
-        with gzip.decompress(response.content) as decompressed:
-            data = json.loads(decompressed)
+        with gzip.GzipFile(fileobj=BytesIO(response.content)) as gz:
+            data = json.load(gz)
             return data
     except Exception as e:
         raise ValueError(f"Failed to load dataset for BILD ID '{bildid}': {e}")
