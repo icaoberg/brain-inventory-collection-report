@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import humanize
 
-from plots.download_and_get_data import load_collectioon_data
+from plots.download_and_get_data import load_collection_data
 from plots.download_and_get_data import load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 
