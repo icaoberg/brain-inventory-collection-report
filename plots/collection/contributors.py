@@ -3,14 +3,13 @@ import plotly.express as px
 
 
 def plot(df, selected_collection):
-    st.subheader("🏛️ Dataset Distribution by Contributors")
     collection_subset = df[df["collection"] == selected_collection]
 
     if (
-        "contributors" in collection_subset.columns
+        "contributor" in collection_subset.columns
         and collection_subset["contributor"].notna().sum() > 0
     ):
-        counts = collection_subset["contributors"].dropna().value_counts()
+        counts = collection_subset["contributor"].dropna().value_counts()
         fig = px.pie(
             names=counts.index,
             values=counts.values,

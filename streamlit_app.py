@@ -8,9 +8,11 @@ import humanize
 # Import modular plotting functions
 from plots.collection.affiliation import plot as affiliation_plot
 from plots.collection.contributors import plot as contributors_plot
+from plots.collection.modalities import plot as generalmodalities_plot
+from plots.collection.techniques import plot as techniques_plot
+
 from plots.download_and_get_data import load_data
 from plots.intro import print_intro
-
 
 # ────────────────────────────────
 # App Title and Introduction
@@ -43,44 +45,42 @@ try:
     # Collection Selection Dropdown
     # ────────────────────────────────
     st.subheader("📁 Collections")
-    # selected_collection = st.selectbox("Select collection", df["collection"].dropna().unique())
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.selectbox(
         "Select a Collection:", unique_collections, index=default_index
     )
-    st.markdown(f"You selected: **{selected_collection}**")
 
-    # Table of datasets for selected collection
-    filtered_df = df[df["collection"] == selected_collection][
-        ["collection", "bildid", "number_of_files", "pretty_size"]
-    ].rename(
-        columns={
-            "collection": "Collection",
-            "bildid": "Brain ID",
-            "number_of_files": "Number of Files",
-            "pretty_size": "Size",
-        }
-    )
-    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+    # Filter to selected collection
+    collection_subset = df[df["collection"] == selected_collection]
+
+    st.subheader("📊 Summary")
+
+    # Compute values
+    num_datasets = len(collection_subset)
+    total_files = collection_subset["number_of_files"].fillna(0).sum() if "number_of_files" in collection_subset.columns else 0
+    total_size_bytes = collection_subset["size"].fillna(0).sum() if "size" in collection_subset.columns else 0
+    readable_size = humanize.naturalsize(total_size_bytes, binary=True)
+    avg_score = collection_subset["score"].dropna().mean() if "score" in collection_subset.columns else None
+    coverage_pct = f"{avg_score * 100:.2f}%" if pd.notna(avg_score) else "N/A"
+
+    # Display as bullet points
+    st.markdown(f"""
+    - **Total number of datasets:** {num_datasets:,}
+    - **Total number of files:** {int(total_files):,}
+    - **Total size of collection:** {readable_size}
+    - **Total checksum coverage:** {coverage_pct}
+    """)
 
     # ────────────────────────────────
-    # Pie Chart: Dataset by Affiliation and Contributors
+    # Dataset by Affiliation and Contributors
     # ────────────────────────────────
     affiliation_plot(df, selected_collection)
-    contributors_plot(df, selected_collection)
 
     # ────────────────────────────────
-    # Bar Chart: Dataset Count by Collection (Labeled by bildid)
+    # Dataset by Modalities and Techniques
     # ────────────────────────────────
-
-    # ────────────────────────────────
-    # Pie Chart: File Types
-    # ────────────────────────────────
-
-    # ────────────────────────────────
-    # Pie Chart: MIME Types
-    # ────────────────────────────────
+    techniques_plot(df, selected_collection)
 
 except Exception as e:
     st.error(f"Failed to load or process data: {e}")
