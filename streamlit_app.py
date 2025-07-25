@@ -12,7 +12,7 @@ from plots.collection.modalities import plot as generalmodalities_plot
 from plots.collection.techniques import plot as techniques_plot
 
 from plots.download_and_get_data import load_data
-from plots.intro import print_intro
+from plots.intro import print_collection_intro as print_intro
 
 # ────────────────────────────────
 # App Title and Introduction
