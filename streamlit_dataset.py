@@ -8,6 +8,7 @@ import humanize
 from plots.download_and_get_data import load_collection_data
 from plots.download_and_get_data import load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
+from plots.datasets import plot_extension_histogram
 
 # ────────────────────────────────
 # App Title and Introduction
@@ -43,14 +44,18 @@ try:
     )
 
     data = load_dataset_data(selected_bildid)
+    
     st.write(f'Metadata version: {data["version"]}')
     st.write(f'General modality: {data["modality"]}')
     st.write(f'Technique: {data["technique"]}')
 
     if "manifest" in data:
         manifest_df = pd.DataFrame(data["manifest"])
-        st.write("📄 Manifest DataFrame:")
+        st.write("📄 Manifest DataFrame")
         st.dataframe(manifest_df)
+
+    plot_extension_histogram(df)
+
     else:
         st.warning("The 'manifest' key was not found in the JSON block.")
 except Exception as e:
