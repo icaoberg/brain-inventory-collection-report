@@ -38,7 +38,7 @@ try:
     st.sidebar.markdown("### 📌 Datasets in Collection")
     matching_bildids = sorted(collection_subset["bildid"].dropna().unique())
     selected_bildid = st.sidebar.selectbox(
-        "Select a Dataset (BILD ID):\", matching_bildids
+        "Select a Dataset (BILD ID)", matching_bildids
     )
 
 except Exception as e:
