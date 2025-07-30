@@ -170,7 +170,17 @@ try:
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
-    )
+        )
+
+        st.subheader("🧬 Checksum coverage")
+        st.markdown(
+            f"""
+        - **md5:** {}
+        - **sha256:** {manifest_df['md5'].dropna().average() if 'md5' in manifest_df else 0}
+        - **xxh64:** {}
+        - **b2sum:** {}
+        """
+        )
 
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df)
