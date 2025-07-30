@@ -181,7 +181,8 @@ try:
 
         checksums = {'md5'}
         for checksum in checksums:
-            st.markdown(f"- **{checksum}:** 0\%")
+            score = manifest_df["md5"].notna().notnull().mean()
+            st.markdown(f"- **{checksum}:** {score}\%")
 
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
