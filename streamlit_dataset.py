@@ -159,4 +159,4 @@ try:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
 except Exception as e:
-    st.error(f"❌ Failed to load or process data: {e}")
+    st.error(f"❌ Failed to load or process data. More than likely inventory file has not been found.")
