@@ -39,7 +39,7 @@ def plot_mimetype_histogram(df: pd.DataFrame):
     fig.update_traces(textposition="outside")
     fig.update_layout(xaxis_tickangle=-45)
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=False)
 
 def plot_filetype_histogram(df: pd.DataFrame):
     """
@@ -73,7 +73,7 @@ def plot_filetype_histogram(df: pd.DataFrame):
     fig.update_traces(textposition="outside")
     fig.update_layout(xaxis_tickangle=-45)
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=False)
 
 
 def plot_extension_histogram(df: pd.DataFrame):
@@ -111,7 +111,7 @@ def plot_extension_histogram(df: pd.DataFrame):
     fig.update_layout(xaxis_tickangle=-45)
 
     # Display chart in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=False)
 
 # ────────────────────────────────
 # App Title and Introduction
