@@ -3,6 +3,44 @@ import pandas as pd
 
 from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
+import plotly.express as px
+
+def plot_extension_histogram(df: pd.DataFrame):
+    """
+    Plot a bar chart of file extensions in ascending order of frequency.
+
+    Parameters:
+    - df (pd.DataFrame): DataFrame containing an 'extension' column
+    """
+    if 'extension' not in df.columns:
+        st.warning("No 'extension' column found in the dataset.")
+        return
+
+    # Drop missing values and count extensions
+    counts = (
+        df["extension"]
+        .dropna()
+        .value_counts()
+        .sort_values(ascending=True)
+        .reset_index()
+    )
+    counts.columns = ["extension", "count"]
+
+    # Create bar chart
+    fig = px.bar(
+        counts,
+        x="extension",
+        y="count",
+        title="File Extension Histogram (Ascending Order)",
+        labels={"extension": "File Extension", "count": "Frequency"},
+        text="count",
+    )
+
+    fig.update_traces(textposition="outside")
+    fig.update_layout(xaxis_tickangle=-45)
+
+    # Display chart in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
 
 # ────────────────────────────────
 # App Title and Introduction
@@ -53,6 +91,7 @@ try:
         st.dataframe(manifest_df)
 
         st.subheader("📊 Extension Histogram")
+        plot_extension_histogram(df)
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
