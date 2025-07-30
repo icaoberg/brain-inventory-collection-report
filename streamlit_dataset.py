@@ -162,6 +162,7 @@ try:
         st.subheader("🧬 Dataset Summary")
         st.markdown(
             f"""
+        - **Status:** {data.get('status', 'N/A')}
         - **Metadata version:** {data.get('version', 'N/A')}
         - **General modality:** {data.get('modality', 'N/A')}
         - **Technique:** {data.get('technique', 'N/A')}
