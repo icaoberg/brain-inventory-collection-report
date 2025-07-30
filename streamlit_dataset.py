@@ -198,7 +198,7 @@ try:
         st.dataframe(manifest_df)
 
         st.subheader("📊 Checksums coverage report")
-        plot_checksum_sunburst_from_df(df
+        plot_checksum_sunburst_from_df(manifest_df)
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
