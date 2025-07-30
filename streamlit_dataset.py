@@ -1,12 +1,7 @@
 import streamlit as st
 import pandas as pd
-import requests
-import re
-from datetime import datetime
-import humanize
 
-from plots.download_and_get_data import load_collection_data
-from plots.download_and_get_data import load_dataset_data
+from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 from plots.datasets import plot_extension_histogram
 
@@ -39,22 +34,29 @@ try:
     # ────────────────────────────────
     st.sidebar.markdown("### 📌 Datasets in Collection")
     matching_bildids = sorted(collection_subset["bildid"].dropna().unique())
-    selected_bildid = st.sidebar.selectbox(
-        "Select a Dataset (BILD ID)", matching_bildids
-    )
+    selected_bildid = st.sidebar.selectbox("Select a Dataset (BILD ID)", matching_bildids)
 
+    # Load selected dataset metadata
     data = load_dataset_data(selected_bildid)
-    
-    st.write(f'Metadata version: {data["version"]}')
-    st.write(f'General modality: {data["modality"]}')
-    st.write(f'Technique: {data["technique"]}')
 
+    # Display metadata
+    st.subheader("🧬 Dataset Metadata")
+    st.write(f"**Metadata version:** {data.get('version', 'N/A')}")
+    st.write(f"**General modality:** {data.get('modality', 'N/A')}")
+    st.write(f"**Technique:** {data.get('technique', 'N/A')}")
+
+    # ────────────────────────────────
+    # Manifest Table and Plot
+    # ────────────────────────────────
     if "manifest" in data:
         manifest_df = pd.DataFrame(data["manifest"])
-        st.write("📄 Manifest DataFrame")
+        st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df)
-        plot_extension_histogram(df)
+
+        st.subheader("📊 Extension Histogram")
+        plot_extension_histogram(manifest_df)
     else:
-        st.warning("The 'manifest' key was not found in the JSON block.")
+        st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
+
 except Exception as e:
-    st.error(f"Failed to load or process data: {e}")
+    st.error(f"❌ Failed to load or process data: {e}")
