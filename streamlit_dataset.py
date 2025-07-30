@@ -5,63 +5,14 @@ from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
 
-def plot_checksum_sunburst_from_df(df: pd.DataFrame):
-    """
-    Plot a sunburst chart using aggregated checksum scores from a DataFrame.
-
-    Parameters:
-    - df (pd.DataFrame): DataFrame containing the columns:
-                         'score', 'md5', 'sha256', 'xxh64', and 'b2sum'
-    """
-
-    for col in {'md5', 'sha256', 'xxh64', 'b2sum'}:
-        if col not in df.keys():
-            df[col] = None
-
-    st.write(df.keys())
-    # Sum the columns to get total scores
-    total_scores = {
-        "md5": df["md5"].sum(),
-        "sha256": df["sha256"].sum(),
-        "xxh64sum": df["xxh64"].sum(),
-        "b2sum": df["b2sum"].sum()
-    }
-
-    # Root score (can be total of all or left as 0 to hide the central wedge value)
-    total_root_score = sum(total_scores.values())
-
-    # Build the sunburst structure
-    sunburst_df = pd.DataFrame({
-        "parent": ["score"] * 4 + [""],
-        "label": ["md5", "sha256", "xxh64sum", "b2sum", "score"],
-        "value": [
-            total_scores["md5"],
-            total_scores["sha256"],
-            total_scores["xxh64sum"],
-            total_scores["b2sum"],
-            0  # root node — value not used for sunburst
-        ]
-    })
-
-    # Create the sunburst chart
-    fig = px.sunburst(
-        sunburst_df,
-        names="label",
-        parents="parent",
-        values="value",
-        title="Checksum Score Breakdown by Hash Algorithm"
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
-
 def plot_mimetype_histogram(df: pd.DataFrame):
     """
-    Plot a pie chart of file types by frequency.
+    Plot a bar chart of MIME types by frequency.
 
     Parameters:
-    - df (pd.DataFrame): DataFrame containing a 'filetype' column
+    - df (pd.DataFrame): DataFrame containing a 'mime-type' column
     """
-    if 'filetype' not in df.columns:
+    if 'mime-type' not in df.columns:
         st.warning("No 'mime-type' column found in the dataset.")
         return
 
@@ -69,23 +20,28 @@ def plot_mimetype_histogram(df: pd.DataFrame):
         df["mime-type"]
         .dropna()
         .value_counts()
+        .sort_values(ascending=True)
         .reset_index()
     )
     counts.columns = ["mime-type", "count"]
 
-    fig = px.pie(
+    fig = px.bar(
         counts,
-        names="mime-type",
-        values="count",
-        title="Mime-types Distribution",
-        hole=0.3
+        x="mime-type",
+        y="count",
+        title="MIME Type Frequency",
+        labels={"mime-type": "MIME Type", "count": "Count"},
+        text="count"
     )
+
+    fig.update_traces(textposition="outside")
+    fig.update_layout(xaxis_tickangle=-45)
 
     st.plotly_chart(fig, use_container_width=True)
 
 def plot_filetype_histogram(df: pd.DataFrame):
     """
-    Plot a pie chart of file types by frequency.
+    Plot a bar chart of file types by frequency.
 
     Parameters:
     - df (pd.DataFrame): DataFrame containing a 'filetype' column
@@ -98,17 +54,22 @@ def plot_filetype_histogram(df: pd.DataFrame):
         df["filetype"]
         .dropna()
         .value_counts()
+        .sort_values(ascending=True)
         .reset_index()
     )
     counts.columns = ["filetype", "count"]
 
-    fig = px.pie(
+    fig = px.bar(
         counts,
-        names="filetype",
-        values="count",
-        title="File Types Distribution",
-        hole=0.3
+        x="filetype",
+        y="count",
+        title="File Type Frequency",
+        labels={"filetype": "File Type", "count": "Count"},
+        text="count"
     )
+
+    fig.update_traces(textposition="outside")
+    fig.update_layout(xaxis_tickangle=-45)
 
     st.plotly_chart(fig, use_container_width=True)
 
