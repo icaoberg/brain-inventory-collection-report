@@ -13,6 +13,11 @@ def plot_checksum_sunburst_from_df(df: pd.DataFrame):
     - df (pd.DataFrame): DataFrame containing the columns:
                          'score', 'md5', 'sha256', 'xxh64', and 'b2sum'
     """
+
+    for col in {'md5', 'sha256', 'xxh64', 'b2sum'}:
+        if col not in df.keys():
+            df[col] = None
+            
     st.write(df.keys())
     # Sum the columns to get total scores
     total_scores = {
