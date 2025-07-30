@@ -184,24 +184,24 @@ try:
     # Load selected dataset metadata
     data = load_dataset_data(selected_bildid)
 
-    # Display metadata
-    st.subheader("🧬 Dataset Summary")
-    st.markdown(
-        f"""
-    - **Metadata version:** {data.get('version', 'N/A')}
-    - **General modality:** {data.get('modality', 'N/A')}
-    - **Technique:** {data.get('technique', 'N/A')}
-    - **Award number:** {data.get('award_number', 'N/A')}
-    - **Location:** {data.get('bildirectory', 'N/A')}
-    """
-    )
-
-
     # ────────────────────────────────
     # Manifest Table and Plot
     # ────────────────────────────────
     if "manifest" in data:
         manifest_df = pd.DataFrame(data["manifest"])
+
+        # Display metadata
+        st.subheader("🧬 Dataset Summary")
+        st.markdown(
+            f"""
+        - **Metadata version:** {data.get('version', 'N/A')}
+        - **General modality:** {data.get('modality', 'N/A')}
+        - **Technique:** {data.get('technique', 'N/A')}
+        - **Award number:** {data.get('award_number', 'N/A')}
+        - **Location:** {data.get('directory', 'N/A')}
+        """
+    )
+
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df)
 
@@ -209,7 +209,6 @@ try:
         plot_extension_histogram(manifest_df)
         plot_filetype_histogram(manifest_df)
         plot_mimetype_histogram(manifest_df)
-        
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
