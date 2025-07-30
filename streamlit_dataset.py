@@ -178,14 +178,10 @@ try:
         )
 
         st.subheader("🧬 Checksum coverage")
-        st.markdown(
-        f"""
-        - **md5:** 0\%
-        - **sha256:** 0\%
-        - **xxh64:** 0\%
-        - **b2sum:** 0\%
-        """
-        )
+
+        checksums = {'md5'}
+        for checksum in checksums:
+            st.markdown(f"- **{checksum}:** 0\%)
 
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
