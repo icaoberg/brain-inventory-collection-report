@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 
 def print_collection_intro():
-    st.title("🧠 Brain Image Library Inventory Daily Report")
+    st.title("🧠 Brain Image Library Inventory Landing Pages")
 
     st.markdown(
         """
