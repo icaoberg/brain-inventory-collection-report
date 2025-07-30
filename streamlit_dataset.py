@@ -166,7 +166,7 @@ try:
         - **Award number:** {data.get('award_number', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
         - **Number of files:** {len(df)}
-        - **Dataset size:** {humanize.naturalsize(df['size'].dropna().sum(), binary=True)}"
+        - **Dataset size:** {humanize.naturalsize(df['size'].dropna().sum(), binary=True)}
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
