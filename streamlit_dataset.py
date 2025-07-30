@@ -18,6 +18,7 @@ def plot_checksum_sunburst_from_df(df: pd.DataFrame):
         st.error(f"DataFrame must contain columns: {', '.join(required_cols)}")
         return
 
+    print(df.keys())
     # Sum the columns to get total scores
     total_scores = {
         "md5": df["md5"].sum(),
