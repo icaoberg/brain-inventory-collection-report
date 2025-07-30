@@ -53,9 +53,7 @@ try:
         manifest_df = pd.DataFrame(data["manifest"])
         st.write("📄 Manifest DataFrame")
         st.dataframe(manifest_df)
-
-    plot_extension_histogram(df)
-
+        plot_extension_histogram(df)
     else:
         st.warning("The 'manifest' key was not found in the JSON block.")
 except Exception as e:
