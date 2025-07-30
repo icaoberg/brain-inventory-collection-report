@@ -192,6 +192,7 @@ try:
 
         # Check if any 'filetype' contains the word 'tracing' (case-insensitive)
         has_tracing = manifest_df["filetype"].dropna().str.contains("tracing", case=False).any()
+        has_matrices = manifest_df["filename"].dropna().str.contains("cell_by_gene.h5ad", case=False).any()
 
         # Display metadata
         st.subheader("🧬 Dataset Summary")
@@ -203,6 +204,7 @@ try:
         - **Award number:** {data.get('award_number', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
         - **Has tracings:** {"✅" if has_tracing else "❌"}
+        - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
     )
 
