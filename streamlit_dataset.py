@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-
+import humanize
 from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
@@ -166,7 +166,7 @@ try:
         - **Award number:** {data.get('award_number', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
         - **Number of files:** {len(df)}
-        - **Dataset size:** {df['size'].dropna().sum()}
+        - **Dataset size:** {humanize.naturalsize(df['size'].dropna().sum(), binary=True)}")
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
