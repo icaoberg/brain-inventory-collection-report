@@ -3,7 +3,6 @@ import pandas as pd
 
 from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
-from plots.datasets import plot_extension_histogram
 
 # ────────────────────────────────
 # App Title and Introduction
@@ -54,7 +53,6 @@ try:
         st.dataframe(manifest_df)
 
         st.subheader("📊 Extension Histogram")
-        plot_extension_histogram(manifest_df)
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
