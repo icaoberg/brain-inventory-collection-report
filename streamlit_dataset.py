@@ -120,7 +120,7 @@ try:
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df)
 
-        st.subheader("📊 Extension Histogram")
+        st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
         plot_filetype_histogram(manifest_df)
         
