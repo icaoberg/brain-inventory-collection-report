@@ -91,7 +91,7 @@ try:
         st.dataframe(manifest_df)
 
         st.subheader("📊 Extension Histogram")
-        plot_extension_histogram(df)
+        plot_extension_histogram(manifest_dfdf)
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
