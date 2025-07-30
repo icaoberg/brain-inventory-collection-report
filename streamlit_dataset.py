@@ -175,10 +175,10 @@ try:
         st.subheader("🧬 Checksum coverage")
         st.markdown(
             f"""
-        - **md5:** {}
+        - **md5:** {'N/A'}
         - **sha256:** {manifest_df['md5'].dropna().average() if 'md5' in manifest_df else 0}
-        - **xxh64:** {}
-        - **b2sum:** {}
+        - **xxh64:** {'N/A'}
+        - **b2sum:** {'N/A'}
         """
         )
 
