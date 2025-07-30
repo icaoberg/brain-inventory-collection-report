@@ -190,7 +190,10 @@ try:
         st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
 
         st.subheader("📄 Datacite")
-        st.json(brainzzz.dois.__get_datacite_metadata(selected_bildid))
+        try:
+            st.json(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid))
+        except:
+            st.error(f"❌ Failed to load or process data from Datacite.")
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
