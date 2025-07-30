@@ -29,7 +29,7 @@ def plot_mimetype_histogram(df: pd.DataFrame):
         counts,
         names="mime-type",
         values="count",
-        title="File Type Distribution",
+        title="Mime-types Distribution",
         hole=0.3
     )
 
@@ -58,7 +58,7 @@ def plot_filetype_histogram(df: pd.DataFrame):
         counts,
         names="filetype",
         values="count",
-        title="File Type Distribution",
+        title="File Types Distribution",
         hole=0.3
     )
 
@@ -91,7 +91,7 @@ def plot_extension_histogram(df: pd.DataFrame):
         counts,
         x="extension",
         y="count",
-        title="File Extension Histogram (Ascending Order)",
+        title="File Extension Histogram",
         labels={"extension": "File Extension", "count": "Frequency"},
         text="count",
     )
