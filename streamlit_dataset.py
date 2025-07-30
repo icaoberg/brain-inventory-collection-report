@@ -186,7 +186,7 @@ try:
         )
 
         st.subheader("📄 Manifest Table")
-        st.dataframe(manifest_df)
+        st.dataframe(manifest_df[["filename", "extension", "filetype", "size", "download_url"]])
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
