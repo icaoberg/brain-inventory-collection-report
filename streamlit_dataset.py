@@ -17,7 +17,7 @@ def plot_checksum_sunburst_from_df(df: pd.DataFrame):
     for col in {'md5', 'sha256', 'xxh64', 'b2sum'}:
         if col not in df.keys():
             df[col] = None
-            
+
     st.write(df.keys())
     # Sum the columns to get total scores
     total_scores = {
@@ -186,9 +186,16 @@ try:
 
     # Display metadata
     st.subheader("🧬 Dataset Metadata")
-    st.write(f"**Metadata version:** {data.get('version', 'N/A')}")
-    st.write(f"**General modality:** {data.get('modality', 'N/A')}")
-    st.write(f"**Technique:** {data.get('technique', 'N/A')}")
+    st.markdown(
+        f"""
+    - **Metadata version:** {data.get('version', 'N/A')}
+    - **General modality:** {data.get('modality', 'N/A')}
+    - **Technique:** {data.get('technique', 'N/A')}
+    - **Award number:** {data.get('award_number', 'N/A')}
+    - **Location:** {data.get('bildirectory', 'N/A')}
+    """
+    )
+
 
     # ────────────────────────────────
     # Manifest Table and Plot
@@ -197,9 +204,6 @@ try:
         manifest_df = pd.DataFrame(data["manifest"])
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df)
-
-        st.subheader("📊 Checksums coverage report")
-        plot_checksum_sunburst_from_df(manifest_df)
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
