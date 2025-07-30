@@ -166,12 +166,9 @@ try:
         - **General modality:** {data.get('modality', 'N/A')}
         - **Technique:** {data.get('technique', 'N/A')}
         - **Species:** {data.get('species', 'N/A')}
-        - **Award number:** {data.get('award_number', 'N/A')}
-        - **Consortium:** {data.get('consortium', 'N/A')}
-        - **Contributors:** {data.get('contributor', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
-        - **Number of files:** {len(df)}
-        - **Dataset size:** {humanize.naturalsize(df['size'].dropna().sum(), binary=True)}
+        - **Number of files:** {len(manifest_df)}
+        - **Dataset size:** {humanize.naturalsize(manifest_df['size'].dropna().sum(), binary=True)}
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
