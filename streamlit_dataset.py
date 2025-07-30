@@ -188,11 +188,11 @@ except Exception as e:
 with st.expander("ℹ️ Copyright and Funding Disclosure"):
     st.markdown(
         """
-        **Brain Image Library** RRID: SCR_017272  
-        
+        This application is an observational tool built using publicly available metadata from the Brain Image Library (BIL). It is intended solely for exploratory and visualization purposes. The app does not host, modify, or redistribute any original imaging data from BIL. All dataset rights and acknowledgments remain with their original contributors.
+        Please note that the information presented here reflects metadata made publicly available through BIL services and is not guaranteed to be comprehensive or current.
+
         The Brain Image Library is supported by the National Institutes of Mental Health of the National Institutes of Health under award number **R24-MH-114793**.  
         The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.  
-        
-        *This repository is under review for potential modification in compliance with Administration directives.*
         """
     )
+
