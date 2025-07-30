@@ -1,3 +1,4 @@
+git+https://github.com/brain-image-library/py-brain-sdk.git
 streamlit
 pandas
 requests

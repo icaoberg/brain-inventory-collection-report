@@ -4,6 +4,7 @@ import humanize
 from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
+import brainimagelibrary as brainzzz
 
 def plot_mimetype_histogram(df: pd.DataFrame):
     """
@@ -187,6 +188,9 @@ try:
 
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
+
+        st.subheader("📄 Datacite")
+        st.json(brainzzz.dois.__get_datacite_metadata(selected_bildid))
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
