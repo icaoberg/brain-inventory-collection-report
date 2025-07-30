@@ -176,7 +176,7 @@ try:
         st.markdown(
             f"""
         - **md5:** {'N/A'}
-        - **sha256:** {manifest_df['md5'].dropna() if 'md5' in manifest_df else 0}
+        - **sha256:** {manifest_df['md5'].dropna().mean() if 'md5' in manifest_df else 0}
         - **xxh64:** {'N/A'}
         - **b2sum:** {'N/A'}
         """
