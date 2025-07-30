@@ -184,3 +184,15 @@ try:
 
 except Exception as e:
     st.error(f"❌ Failed to load or process data. More than likely inventory file has not been found.")
+
+with st.expander("ℹ️ Copyright and Funding Disclosure"):
+    st.markdown(
+        """
+        **Brain Image Library** RRID: SCR_017272  
+        
+        The Brain Image Library is supported by the National Institutes of Mental Health of the National Institutes of Health under award number **R24-MH-114793**.  
+        The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.  
+        
+        *This repository is under review for potential modification in compliance with Administration directives.*
+        """
+    )
