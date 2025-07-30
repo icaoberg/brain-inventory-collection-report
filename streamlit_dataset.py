@@ -174,9 +174,9 @@ try:
 
         st.subheader("🧬 Checksum coverage")
         st.markdown(
-            f"""
-        - **md5:** {manifest_df['md5'].dropna().mean():.2f}
-        - **sha256:** {manifest_df['sha256'].dropna().mean():.2f}"
+        f"""
+        - **md5:** 0\%
+        - **sha256:** 0\%
         """
         )
 
