@@ -153,6 +153,7 @@ def plot_extension_histogram(df: pd.DataFrame):
 # ────────────────────────────────
 # App Title and Introduction
 # ────────────────────────────────
+st.set_page_config(layout="wide")
 print_intro()
 
 try:
