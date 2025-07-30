@@ -185,7 +185,7 @@ try:
     data = load_dataset_data(selected_bildid)
 
     # Display metadata
-    st.subheader("🧬 Dataset Metadata")
+    st.subheader("🧬 Dataset Summary")
     st.markdown(
         f"""
     - **Metadata version:** {data.get('version', 'N/A')}
