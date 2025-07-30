@@ -182,10 +182,10 @@ try:
         checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
         for checksum in checksums:
             if checksum in manifest_df.keys():
-                score = manifest_df["md5"].notna().notnull().mean()
+                score = manifest_df[checksum].notna().notnull().mean()
             else:
                 score = 0
-            st.markdown(f"- **{checksum}:** {score}\%")
+            st.markdown(f"- **{checksum.upper()}:** {score}\%")
 
         st.subheader("📄 Manifest Table")
         st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
