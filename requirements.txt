@@ -6,4 +6,3 @@ humanize
 matplotlib
 numpy
 plotly
-json
