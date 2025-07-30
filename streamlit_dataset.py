@@ -163,7 +163,9 @@ try:
         - **Metadata version:** {data.get('version', 'N/A')}
         - **General modality:** {data.get('modality', 'N/A')}
         - **Technique:** {data.get('technique', 'N/A')}
+        - **Species:** {data.get('species', 'N/A')}
         - **Award number:** {data.get('award_number', 'N/A')}
+        - **consortium:** {data.get('consortium', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
         - **Number of files:** {len(df)}
         - **Dataset size:** {humanize.naturalsize(df['size'].dropna().sum(), binary=True)}
@@ -177,6 +179,8 @@ try:
         f"""
         - **md5:** 0\%
         - **sha256:** 0\%
+        - **xxh64:** 0\%
+        - **b2sum:** 0\%
         """
         )
 
