@@ -5,6 +5,36 @@ from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
 
+
+def plot_mimetype_histogram(df: pd.DataFrame):
+    """
+    Plot a pie chart of file types by frequency.
+
+    Parameters:
+    - df (pd.DataFrame): DataFrame containing a 'filetype' column
+    """
+    if 'filetype' not in df.columns:
+        st.warning("No 'mime-type' column found in the dataset.")
+        return
+
+    counts = (
+        df["mime-type"]
+        .dropna()
+        .value_counts()
+        .reset_index()
+    )
+    counts.columns = ["mime-type", "count"]
+
+    fig = px.pie(
+        counts,
+        names="mime-type",
+        values="count",
+        title="File Type Distribution",
+        hole=0.3
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
 def plot_filetype_histogram(df: pd.DataFrame):
     """
     Plot a pie chart of file types by frequency.
@@ -123,6 +153,7 @@ try:
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
         plot_filetype_histogram(manifest_df)
+        plot_mimetype_histogram(manifest_df)
         
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
