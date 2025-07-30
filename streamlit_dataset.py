@@ -196,7 +196,7 @@ try:
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
         plot_filetype_histogram(manifest_df)
-        plot_mimetype_histogram(manifest_df)
+        #plot_mimetype_histogram(manifest_df)
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
