@@ -5,6 +5,7 @@ from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
 import brainimagelibrary as brainzzz
+import json
 
 def plot_mimetype_histogram(df: pd.DataFrame):
     """
@@ -191,8 +192,7 @@ try:
 
         st.subheader("📄 Datacite")
         try:
-            print(selected_bildid)
-            st.json(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid))
+            st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
         except:
             st.error(f"❌ Failed to load or process data from Datacite.")
 
