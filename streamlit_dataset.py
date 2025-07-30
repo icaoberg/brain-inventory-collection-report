@@ -165,6 +165,8 @@ try:
         - **Technique:** {data.get('technique', 'N/A')}
         - **Award number:** {data.get('award_number', 'N/A')}
         - **Location:** {data.get('directory', 'N/A')}
+        - **Number of files:** {len(df)}
+        - **Dataset size:** {df['size'].dropna().sum()}
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
