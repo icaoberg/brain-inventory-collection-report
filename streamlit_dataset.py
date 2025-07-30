@@ -169,6 +169,7 @@ try:
         - **Location:** {data.get('directory', 'N/A')}
         - **Number of files:** {len(manifest_df)}
         - **Dataset size:** {humanize.naturalsize(manifest_df['size'].dropna().sum(), binary=True)}
+        - **Has DOI:** {"✅" if brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid) else "❌"}
         - **Has tracings:** {"✅" if has_tracing else "❌"}
         - **Has cell by genes matrices:** {"✅" if has_tracing else "❌"}
         """
