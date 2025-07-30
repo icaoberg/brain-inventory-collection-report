@@ -191,6 +191,7 @@ try:
 
         st.subheader("📄 Datacite")
         try:
+            print(selected_bildid)
             st.json(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid))
         except:
             st.error(f"❌ Failed to load or process data from Datacite.")
