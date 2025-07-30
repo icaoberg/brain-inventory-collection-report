@@ -13,7 +13,7 @@ def plot_checksum_sunburst_from_df(df: pd.DataFrame):
     - df (pd.DataFrame): DataFrame containing the columns:
                          'score', 'md5', 'sha256', 'xxh64sum', and 'b2sum'
     """
-    required_cols = {"score", "md5", "sha256", "xxh64sum", "b2sum"}
+    required_cols = {"score", "md5", "sha256", "xxh64", "b2sum"}
     if not required_cols.issubset(df.columns):
         st.error(f"DataFrame must contain columns: {', '.join(required_cols)}")
         return
