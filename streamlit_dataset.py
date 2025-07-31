@@ -5,6 +5,7 @@ from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
 import brainimagelibrary as brainzzz
+from streamlit_image_gallery import image_gallery
 import json
 
 def get_brainpi_link(download_url: str) -> str | None:
@@ -197,8 +198,21 @@ try:
 
         if not manifest_df['brainpi_url'].dropna().eq('').all():
             st.subheader("🧠 Viz")
-            # Your Viz section code here
-            
+            # Make sure 'brainpi_url' exists and is not all null
+            valid_urls = manifest_df['brainpi_url'].dropna().tolist()
+
+            # Create gallery items with static thumbnail
+            gallery_data = [
+                {"src": url, "thumbnail": "https://brainapi.brainimagelibrary.org/static/images/file_loading.png"}
+                for url in valid_urls
+            ]
+
+if gallery_data:
+    st.subheader("🧠 Viz Gallery")
+    image_gallery(gallery_data, height=300)
+else:
+    st.info("No BrainPI visualizations available.")
+
         with st.expander("🧬 Checksum coverage"):
             checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
             for checksum in checksums:
