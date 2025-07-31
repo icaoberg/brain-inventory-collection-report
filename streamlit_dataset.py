@@ -128,11 +128,11 @@ try:
     # ────────────────────────────────
     # Collection Selection in Sidebar
     # ────────────────────────────────
-    st.sidebar.header("📁 Collections")
+    st.sidebar.header("📁 Submissions")
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.sidebar.selectbox(
-        "Select a Collection", unique_collections, index=default_index
+        "Select a Submission", unique_collections, index=default_index
     )
 
     # Filter to selected collection
