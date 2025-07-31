@@ -20,7 +20,7 @@ def load_collection_data():
     data = response.json()
     df = pd.DataFrame(data)
 
-    df["collection"] = df["bildirectory"].apply(extract_collection)
+    df["collection"] = df["bildirectory"].apply(extract_submission)
 
     # Convert raw size to human-readable format
     df["pretty_size"] = df["size"].apply(
@@ -46,9 +46,10 @@ def load_collection_data():
 
 
 # Extract the submission code from bildirectory
-def extract_collection(path):
+def extract_submission(path):
     parts = path.split("/")
-    return parts[4] if len(parts) > 4 else None
+    print(parts)
+    return parts[6] if len(parts) > 6 else None
 
 def load_dataset_data(bildid: str) -> Dict:
     """

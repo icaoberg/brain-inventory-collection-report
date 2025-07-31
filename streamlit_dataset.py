@@ -125,8 +125,6 @@ try:
     # ────────────────────────────────
     df = load_collection_data()
 
-    st.write(df['collection'])
-
     # ────────────────────────────────
     # Collection Selection in Sidebar
     # ────────────────────────────────
