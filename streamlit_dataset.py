@@ -198,22 +198,13 @@ try:
 
         if not manifest_df['brainpi_url'].dropna().eq('').all():
             st.subheader("🧠 Viz")
-            # Filter out empty or null URLs
-            valid_df = manifest_df[manifest_df['brainpi_url'].notna() & (manifest_df['brainpi_url'] != '')]
-
-            # Build gallery input: each item has 'src' and 'title'
-            images = [
-                {
-                    "src": url,
-                    "title": str(row['filename']) if 'filename' in manifest_df.columns else url
-                }
-                for _, row in valid_df.iterrows()
-                for url in [row['brainpi_url']]
-            ]
-
-            # Display gallery if there are images
-            if images:
-                streamlit_image_gallery(images=images, height=300)
+            # Display bullet list with links
+            if not valid_df.empty:
+                st.subheader("🧠 Available BrainPI Visualizations")
+                for _, row in valid_df.iterrows():
+                    filename = row['filename'] if 'filename' in row and pd.notna(row['filename']) else "Unnamed file"
+                    url = row['brainpi_url']
+                    st.markdown(f"- [{filename}]({url})")
             else:
                 st.info("No BrainPI visualizations available.")
 
