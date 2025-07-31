@@ -6,3 +6,4 @@ humanize
 matplotlib
 numpy
 plotly
+streamlit-image-gallery
