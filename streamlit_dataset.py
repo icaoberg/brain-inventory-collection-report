@@ -196,18 +196,6 @@ try:
         """
         )
 
-        if not manifest_df['brainpi_url'].dropna().eq('').all():
-            st.subheader("🧠 Viz")
-            # Display bullet list with links
-            if not valid_df.empty:
-                st.subheader("🧠 Available BrainPI Visualizations")
-                for _, row in valid_df.iterrows():
-                    filename = row['filename'] if 'filename' in row and pd.notna(row['filename']) else "Unnamed file"
-                    url = row['brainpi_url']
-                    st.markdown(f"- [{filename}]({url})")
-            else:
-                st.info("No BrainPI visualizations available.")
-
         with st.expander("🧬 Checksum coverage"):
             checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
             for checksum in checksums:
