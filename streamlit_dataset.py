@@ -218,7 +218,7 @@ try:
             checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
             for checksum in checksums:
                 if checksum in manifest_df.keys():
-                    score = manifest_df[checksum].notna().notnull().mean()
+                    score = 100.0 * manifest_df[checksum].notna().notnull().mean()
                 else:
                     score = 0
                 st.markdown(f"- **{checksum.upper()}:** {score}\%")
