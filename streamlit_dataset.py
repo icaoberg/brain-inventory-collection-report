@@ -247,10 +247,7 @@ try:
             )
 
         with st.expander("📄 Datacite"):
-            try:
-                st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
-            except:
-                st.error(f"❌ Failed to load or process data from Datacite.")
+            st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
 
         with st.expander("📊 Useful Plots"):
             plot_extension_histogram(manifest_df)
