@@ -35,7 +35,7 @@ def load_collection_data():
         ["collection", "bildid", "number_of_files", "pretty_size"]
     ].rename(
         columns={
-            "collection": "Collection",
+            "collection": "Submission",
             "bildid": "Brain ID",
             "number_of_files": "Number of Files",
             "pretty_size": "Size",
