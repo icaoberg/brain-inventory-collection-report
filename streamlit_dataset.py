@@ -187,7 +187,14 @@ try:
             st.markdown(f"- **{checksum.upper()}:** {score}\%")
 
         st.subheader("📄 Manifest Table")
-        st.dataframe(manifest_df[["filename", "filetype", "size", "download_url"]])
+        st.dataframe(
+            manifest_df[["filename", "filetype", "download_url"]]
+            .rename(columns={
+                "filename": "File Name",
+                "filetype": "Type",
+                "download_url": "Download URL"
+            })
+        )
 
         st.subheader("📄 Datacite")
         try:
