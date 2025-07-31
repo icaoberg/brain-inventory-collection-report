@@ -49,7 +49,7 @@ def load_collection_data():
 def extract_submission(path):
     parts = path.split("/")
     print(parts)
-    return parts[6] if len(parts) > 6 else None
+    return parts[5] if len(parts) > 5 else None
 
 def load_dataset_data(bildid: str) -> Dict:
     """
