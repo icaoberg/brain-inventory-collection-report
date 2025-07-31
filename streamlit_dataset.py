@@ -141,7 +141,7 @@ try:
     # ────────────────────────────────
     # BILD ID Selection in Sidebar
     # ────────────────────────────────
-    st.sidebar.markdown("### 📌 Datasets in Collection")
+    st.sidebar.markdown("### 📌 Datasets in Submission")
     matching_bildids = sorted(collection_subset["bildid"].dropna().unique())
     selected_bildid = st.sidebar.selectbox("Select a Dataset (BILD ID)", matching_bildids)
 
