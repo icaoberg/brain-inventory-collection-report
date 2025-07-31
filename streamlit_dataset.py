@@ -234,7 +234,7 @@ try:
                 cols = st.columns(len(row_df))
                 for col, (_, row) in zip(cols, row_df.iterrows()):
                     with col:
-                        st.image(row['thumbnail_url'], use_column_width=True)
+                        st.image(row['thumbnail_url'], use_container_width=True)
                         st.markdown(f"[{row['filename']}]({row['brainpi_url']})", unsafe_allow_html=True)
         else:
             st.info("No BrainPI visualizations available.")
