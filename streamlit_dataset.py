@@ -8,6 +8,23 @@ import plotly.express as px
 import brainimagelibrary as brainzzz
 import json
 
+def get_thumbnail_link(download_url: str) -> str | None:
+    """
+    Convert a BIL download URL to a BrainAPI OSD URL if it's a .tif or .jp2 file.
+    
+    Args:
+        download_url (str): The original download URL.
+    
+    Returns:
+        str | None: The transformed URL or None if not a supported image format.
+    """
+    if download_url.endswith(('.tif', '.jp2')):
+        return download_url.replace(
+            'https://download.brainimagelibrary.org/',
+            'https://brainapi.brainimagelibrary.org/ng/'
+        )
+    return None
+
 def get_brainpi_link(download_url: str) -> str | None:
     """
     Convert a BIL download URL to a BrainAPI OSD URL if it's a .tif or .jp2 file.
@@ -173,6 +190,7 @@ try:
     if "manifest" in data:
         manifest_df = pd.DataFrame(data["manifest"])
         manifest_df['brainpi_url'] = manifest_df['download_url'].apply(get_brainpi_link)
+        manifest_df['thumbnail_url'] = manifest_df['download_url'].apply(get_thumbnail_link)
 
         # Check if any 'filetype' contains the word 'tracing' (case-insensitive)
         has_tracing = manifest_df["filetype"].dropna().str.contains("tracing", case=False).any()
