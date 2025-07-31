@@ -18,7 +18,7 @@ def get_thumbnail_link(download_url: str) -> str | None:
     Returns:
         str | None: The transformed URL or None if not a supported image format.
     """
-    if download_url.endswith(('.tif', '.jp2')):
+    if download_url.endswith(('.tiff', '.tif', '.jp2')):
         return download_url.replace(
             'https://download.brainimagelibrary.org/',
             'https://brainapi.brainimagelibrary.org/ng/'
@@ -35,7 +35,7 @@ def get_brainpi_link(download_url: str) -> str | None:
     Returns:
         str | None: The transformed URL or None if not a supported image format.
     """
-    if download_url.endswith(('.tif', '.jp2')):
+    if download_url.endswith(('.tif', '.tiff', '.jp2')):
         return download_url.replace(
             'https://download.brainimagelibrary.org/',
             'https://brainapi.brainimagelibrary.org/osd/bil_data/'
