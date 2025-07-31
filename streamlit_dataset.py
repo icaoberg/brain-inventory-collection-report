@@ -213,7 +213,6 @@ try:
 
             # Display gallery if there are images
             if images:
-                st.subheader("🧠 Viz Gallery")
                 streamlit_image_gallery(images=images, height=300)
             else:
                 st.info("No BrainPI visualizations available.")
