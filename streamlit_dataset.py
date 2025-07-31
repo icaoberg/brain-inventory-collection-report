@@ -1,3 +1,4 @@
+from streamlit_image_gallery import image_gallery
 import streamlit as st
 import pandas as pd
 import humanize
@@ -5,7 +6,6 @@ from plots.download_and_get_data import load_collection_data, load_dataset_data
 from plots.intro import print_dataset_intro as print_intro
 import plotly.express as px
 import brainimagelibrary as brainzzz
-from streamlit_image_gallery import image_gallery
 import json
 
 def get_brainpi_link(download_url: str) -> str | None:
