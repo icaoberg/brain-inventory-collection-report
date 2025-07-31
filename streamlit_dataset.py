@@ -7,6 +7,24 @@ import plotly.express as px
 import brainimagelibrary as brainzzz
 import json
 
+def get_brainpi_link(download_url: str) -> str | None:
+    """
+    Convert a BIL download URL to a BrainAPI OSD URL if it's a .tif or .jp2 file.
+    
+    Args:
+        download_url (str): The original download URL.
+    
+    Returns:
+        str | None: The transformed URL or None if not a supported image format.
+    """
+    if download_url.endswith(('.tif', '.jp2')):
+        return download_url.replace(
+            'https://download.brainimagelibrary.org/',
+            'https://brainapi.brainimagelibrary.org/osd/bil_data/'
+        )
+    return None
+
+
 def plot_mimetype_histogram(df: pd.DataFrame):
     """
     Plot a bar chart of MIME types by frequency.
@@ -153,6 +171,7 @@ try:
     # ────────────────────────────────
     if "manifest" in data:
         manifest_df = pd.DataFrame(data["manifest"])
+        manifest_df['brainpi_url'] = manifest_df['download_url'].apply(get_brainpi_link)
 
         # Check if any 'filetype' contains the word 'tracing' (case-insensitive)
         has_tracing = manifest_df["filetype"].dropna().str.contains("tracing", case=False).any()
@@ -188,10 +207,11 @@ try:
 
         st.subheader("📄 Manifest Table")
         st.dataframe(
-            manifest_df[["filename", "filetype", "download_url"]]
+            manifest_df[["filename", "filetype", "brainpi_url", "download_url"]]
             .rename(columns={
                 "filename": "File Name",
                 "filetype": "Type",
+                "brainpi_url": "Viz"
                 "download_url": "Download URL"
             })
         )
