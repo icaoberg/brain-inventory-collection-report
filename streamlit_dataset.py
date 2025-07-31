@@ -1,4 +1,4 @@
-from streamlit_image_gallery import image_gallery
+from streamlit_image_gallery import gallery
 import streamlit as st
 import pandas as pd
 import humanize
@@ -209,7 +209,7 @@ try:
 
             if gallery_data:
                 st.subheader("🧠 Viz Gallery")
-                image_gallery(gallery_data, height=300)
+                gallery(gallery_data, height=300)
             else:
                 st.info("No BrainPI visualizations available.")
 
