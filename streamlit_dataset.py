@@ -1,4 +1,4 @@
-from streamlit_image_gallery import gallery
+from streamlit_image_gallery import streamlit_image_gallery
 import streamlit as st
 import pandas as pd
 import humanize
@@ -198,18 +198,23 @@ try:
 
         if not manifest_df['brainpi_url'].dropna().eq('').all():
             st.subheader("🧠 Viz")
-            # Make sure 'brainpi_url' exists and is not all null
-            valid_urls = manifest_df['brainpi_url'].dropna().tolist()
+            # Filter out empty or null URLs
+            valid_df = manifest_df[manifest_df['brainpi_url'].notna() & (manifest_df['brainpi_url'] != '')]
 
-            # Create gallery items with static thumbnail
-            gallery_data = [
-                {"src": url, "thumbnail": "https://brainapi.brainimagelibrary.org/static/images/file_loading.png"}
-                for url in valid_urls
+            # Build gallery input: each item has 'src' and 'title'
+            images = [
+                {
+                    "src": url,
+                    "title": str(row['filename']) if 'filename' in manifest_df.columns else url
+                }
+                for _, row in valid_df.iterrows()
+                for url in [row['brainpi_url']]
             ]
 
-            if gallery_data:
+            # Display gallery if there are images
+            if images:
                 st.subheader("🧠 Viz Gallery")
-                gallery(gallery_data, height=300)
+                streamlit_image_gallery(images=images, height=300)
             else:
                 st.info("No BrainPI visualizations available.")
 
