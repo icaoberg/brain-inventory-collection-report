@@ -207,20 +207,24 @@ try:
 
         st.subheader("📄 Manifest Table")
         st.dataframe(
-            manifest_df[["filename", "filetype", "brainpi_url", "download_url"]]
+            manifest_df[["filename", "filetype", "download_url"]]
             .rename(columns={
                 "filename": "File Name",
                 "filetype": "Type",
-                "brainpi_url": "Viz",
                 "download_url": "Download URL"
             })
         )
 
-        st.subheader("📄 Datacite")
-        try:
-            st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
-        except:
-            st.error(f"❌ Failed to load or process data from Datacite.")
+        if not manifest_df['brainpi_url'].dropna().eq('').all():
+            st.subheader("🧠 Viz")
+            # Your Viz section code here
+
+
+        with st.expander("📄 Datacite")
+            try:
+                st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
+            except:
+                st.error(f"❌ Failed to load or process data from Datacite.")
 
         st.subheader("📊 Useful Plots")
         plot_extension_histogram(manifest_df)
