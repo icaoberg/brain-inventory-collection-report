@@ -205,15 +205,15 @@ try:
                 score = 0
             st.markdown(f"- **{checksum.upper()}:** {score}\%")
 
-        st.subheader("📄 Manifest Table")
-        st.dataframe(
-            manifest_df[["filename", "filetype", "download_url"]]
-            .rename(columns={
-                "filename": "File Name",
-                "filetype": "Type",
-                "download_url": "Download URL"
-            })
-        )
+        with st.expander("📄 Manifest Table"):
+            st.dataframe(
+                manifest_df[["filename", "filetype", "download_url"]]
+                .rename(columns={
+                    "filename": "File Name",
+                    "filetype": "Type",
+                    "download_url": "Download URL"
+                })
+            )
 
         if not manifest_df['brainpi_url'].dropna().eq('').all():
             st.subheader("🧠 Viz")
@@ -226,10 +226,10 @@ try:
             except:
                 st.error(f"❌ Failed to load or process data from Datacite.")
 
-        st.subheader("📊 Useful Plots")
-        plot_extension_histogram(manifest_df)
-        plot_filetype_histogram(manifest_df)
-        #plot_mimetype_histogram(manifest_df)
+        with st.expander("📊 Useful Plots"):
+            plot_extension_histogram(manifest_df)
+            plot_filetype_histogram(manifest_df)
+            #plot_mimetype_histogram(manifest_df)
     else:
         st.warning("⚠️ The 'manifest' key was not found in the dataset JSON.")
 
