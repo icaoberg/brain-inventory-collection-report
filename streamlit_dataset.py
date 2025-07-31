@@ -214,6 +214,31 @@ try:
         """
         )
 
+        # Filter valid rows
+        valid_df = manifest_df[
+            manifest_df['brainpi_url'].notna() & 
+            (manifest_df['brainpi_url'] != '') & 
+            manifest_df['thumbnail_url'].notna() & 
+            (manifest_df['thumbnail_url'] != '')
+        ]
+
+        # Show Viz section if there are valid rows
+        if not valid_df.empty:
+            st.subheader("🧠 Viz")
+
+            # Number of columns per row
+            num_cols = 4
+            rows = [valid_df.iloc[i:i + num_cols] for i in range(0, len(valid_df), num_cols)]
+
+            for row_df in rows:
+                cols = st.columns(len(row_df))
+                for col, (_, row) in zip(cols, row_df.iterrows()):
+                    with col:
+                        st.image(row['thumbnail_url'], use_column_width=True)
+                        st.markdown(f"[{row['filename']}]({row['brainpi_url']})", unsafe_allow_html=True)
+        else:
+            st.info("No BrainPI visualizations available.")
+
         with st.expander("🧬 Checksum coverage"):
             checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
             for checksum in checksums:
