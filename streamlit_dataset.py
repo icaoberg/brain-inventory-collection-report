@@ -220,7 +220,7 @@ try:
             # Your Viz section code here
 
 
-        with st.expander("📄 Datacite")
+        with st.expander("📄 Datacite"):
             try:
                 st.json(json.loads(brainzzz.dois.__get_datacite_metadata(dataset_id=selected_bildid)))
             except:
