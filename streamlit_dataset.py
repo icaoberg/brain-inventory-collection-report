@@ -207,11 +207,11 @@ try:
                 for url in valid_urls
             ]
 
-if gallery_data:
-    st.subheader("🧠 Viz Gallery")
-    image_gallery(gallery_data, height=300)
-else:
-    st.info("No BrainPI visualizations available.")
+            if gallery_data:
+                st.subheader("🧠 Viz Gallery")
+                image_gallery(gallery_data, height=300)
+            else:
+                st.info("No BrainPI visualizations available.")
 
         with st.expander("🧬 Checksum coverage"):
             checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
