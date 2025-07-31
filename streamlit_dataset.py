@@ -132,7 +132,7 @@ try:
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.sidebar.selectbox(
-        "Select a Submission", unique_collections, index=default_index
+        "Select first 2 characters of the submission", unique_collections, index=default_index
     )
 
     # Filter to selected collection
