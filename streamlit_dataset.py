@@ -211,7 +211,7 @@ try:
             .rename(columns={
                 "filename": "File Name",
                 "filetype": "Type",
-                "brainpi_url": "Viz"
+                "brainpi_url": "Viz",
                 "download_url": "Download URL"
             })
         )
