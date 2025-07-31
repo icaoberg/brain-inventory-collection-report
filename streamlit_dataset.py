@@ -195,15 +195,18 @@ try:
         """
         )
 
-        st.subheader("🧬 Checksum coverage")
-
-        checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
-        for checksum in checksums:
-            if checksum in manifest_df.keys():
-                score = manifest_df[checksum].notna().notnull().mean()
-            else:
-                score = 0
-            st.markdown(f"- **{checksum.upper()}:** {score}\%")
+        if not manifest_df['brainpi_url'].dropna().eq('').all():
+            st.subheader("🧠 Viz")
+            # Your Viz section code here
+            
+        with st.expander("🧬 Checksum coverage"):
+            checksums = {'md5', 'sha256', 'xxh64', 'b2sum'}
+            for checksum in checksums:
+                if checksum in manifest_df.keys():
+                    score = manifest_df[checksum].notna().notnull().mean()
+                else:
+                    score = 0
+                st.markdown(f"- **{checksum.upper()}:** {score}\%")
 
         with st.expander("📄 Manifest Table"):
             st.dataframe(
@@ -214,11 +217,6 @@ try:
                     "download_url": "Download URL"
                 })
             )
-
-        if not manifest_df['brainpi_url'].dropna().eq('').all():
-            st.subheader("🧠 Viz")
-            # Your Viz section code here
-
 
         with st.expander("📄 Datacite"):
             try:
