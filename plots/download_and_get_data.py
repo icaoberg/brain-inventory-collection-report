@@ -45,10 +45,10 @@ def load_collection_data():
     return df_sorted
 
 
-# Extract 2-character collection code from bildirectory
+# Extract the submission code from bildirectory
 def extract_collection(path):
-    match = re.search(r"/bil/data/([a-f0-9]{2})/", path)
-    return match.group(1) if match else None
+    parts = path.split("/")
+    return parts[4] if len(parts) > 4 else None
 
 def load_dataset_data(bildid: str) -> Dict:
     """
