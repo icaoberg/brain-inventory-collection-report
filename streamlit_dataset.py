@@ -130,7 +130,7 @@ try:
     # ────────────────────────────────
     st.sidebar.header("📁 Submissions")
     unique_collections = sorted(df["collection"].dropna().unique())
-    default_index = unique_collections.index("ffa289283e3c635c") if "ffa289283e3c635c" in unique_collections else 0
+    default_index = unique_collections.index("0500368854") if "0500368854" in unique_collections else 0
     selected_collection = st.sidebar.selectbox(
         "Select Submission", unique_collections, index=default_index
     )
