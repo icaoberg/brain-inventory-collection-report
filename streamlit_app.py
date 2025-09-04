@@ -36,7 +36,6 @@ try:
                 "technique",
                 "number_of_files",
                 "size",
-                "frequencies",
             ]
         ],
         use_container_width=True,
