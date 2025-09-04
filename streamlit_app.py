@@ -24,6 +24,7 @@ try:
     # Load and Parse JSON Data
     # ────────────────────────────────
     df = load_data()
+    df["size"] = df["size"] / (1024**3)
 
     st.subheader("Sorted by Number of Files")
     st.dataframe(
@@ -45,7 +46,7 @@ try:
     # ────────────────────────────────
     # Collection Selection Dropdown
     # ────────────────────────────────
-    st.subheader("📁 Collections")
+    st.subheader("📁 Submissions")
     unique_collections = sorted(df["collection"].dropna().unique())
     default_index = unique_collections.index("26") if "26" in unique_collections else 0
     selected_collection = st.selectbox(
