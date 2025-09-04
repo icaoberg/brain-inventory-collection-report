@@ -34,6 +34,7 @@ try:
                 "generalmodality",
                 "technique",
                 "number_of_files",
+                "size",
                 "frequencies",
             ]
         ],
